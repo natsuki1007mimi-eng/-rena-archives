@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RENA — Main Story Complete</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Noto+Serif+JP:wght@300;400;500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a84c;
+    --gold-dim: #5a4518;
+    --dark: #07090d;
+    --dark2: #0c1018;
+    --text: #cdc8be;
+    --text-dim: #6e6a60;
+    --text-bright: #e8e2d6;
+    --force: #a78bfa;
+    --force-dim: #3b2a6e;
+    --red: #c94c4c;
+    --blue: #5aaeff;
+    --blue-dim: #1a3a6e;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--dark); color: var(--text); font-family: 'Noto Serif JP', serif; font-weight: 300; line-height: 2.1; overflow-x: hidden; }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 8% 12%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 25% 40%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 45% 20%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 60% 60%, rgba(255,255,255,0.25) 0%, transparent 100%),
+      radial-gradient(1px 1px at 75% 10%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 85% 45%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 15% 75%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 50% 85%, rgba(255,255,255,0.3) 0%, transparent 100%);
+    pointer-events: none; z-index: 0;
+  }
+  .page { max-width: 740px; margin: 0 auto; padding: 0 28px 100px; position: relative; z-index: 1; }
+
+  /* COVER */
+  .cover { text-align: center; padding: 100px 0 80px; border-bottom: 1px solid var(--gold-dim); margin-bottom: 60px; opacity: 0; animation: fadeDown 1s ease 0.2s forwards; position: relative; }
+  .cover::after { content: ''; display: block; width: 80px; height: 2px; background: var(--gold); margin: -1px auto 0; }
+  .cover-eyebrow { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 6px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 20px; }
+  .cover-title { font-family: 'Cinzel', serif; font-size: clamp(52px, 12vw, 96px); font-weight: 900; color: var(--gold); letter-spacing: 10px; text-shadow: 0 0 60px rgba(201,168,76,0.4); line-height: 1; margin-bottom: 8px; }
+  .cover-sub { font-family: 'Cinzel', serif; font-size: clamp(12px, 2.5vw, 16px); letter-spacing: 5px; color: var(--text-dim); margin-bottom: 12px; }
+  .cover-tagline { font-size: 14px; color: var(--text-dim); font-style: italic; margin-bottom: 40px; }
+  .cover-tag { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--text-dim); border: 1px solid var(--gold-dim); padding: 4px 16px; letter-spacing: 3px; display: inline-block; }
+
+  /* TOC */
+  .toc { background: var(--dark2); border: 1px solid var(--gold-dim); padding: 32px 36px; margin-bottom: 80px; opacity: 0; animation: fadeUp 0.8s ease 0.4s forwards; }
+  .toc-title { font-family: 'Cinzel', serif; font-size: 14px; letter-spacing: 4px; color: var(--gold); margin-bottom: 24px; }
+  .toc-list { list-style: none; }
+  .toc-item { display: flex; justify-content: space-between; align-items: baseline; padding: 8px 0; border-bottom: 1px solid rgba(201,168,76,0.08); }
+  .toc-item:last-child { border-bottom: none; }
+  .toc-link { font-size: 14px; color: var(--text); text-decoration: none; }
+  .toc-link:hover { color: var(--gold); }
+  .toc-num { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--text-dim); letter-spacing: 2px; }
+
+  /* CHAPTER HEADER */
+  .ch-header { text-align: center; padding: 80px 0 56px; border-bottom: 1px solid var(--gold-dim); margin-bottom: 60px; position: relative; scroll-margin-top: 60px; }
+  .ch-header::after { content: ''; position: absolute; bottom: -1px; left: 50%; transform: translateX(-50%); width: 80px; height: 2px; background: var(--gold); }
+  .ch-eyebrow { font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 6px; color: var(--gold); text-transform: uppercase; margin-bottom: 10px; }
+  .ch-title { font-family: 'Cinzel', serif; font-size: clamp(32px, 8vw, 60px); font-weight: 900; color: var(--gold); letter-spacing: 8px; line-height: 1; text-shadow: 0 0 50px rgba(201,168,76,0.3); margin-bottom: 8px; }
+  .ch-title-jp { font-size: clamp(13px, 2.5vw, 17px); color: var(--text-dim); letter-spacing: 4px; margin-bottom: 28px; }
+  .ch-planet { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--text-dim); border: 1px solid var(--gold-dim); padding: 3px 14px; letter-spacing: 3px; display: inline-block; }
+
+  /* PROSE */
+  p { font-size: clamp(15px, 2.2vw, 17px); margin-bottom: 1.8em; font-weight: 300; color: var(--text); text-align: justify; }
+  .scene-break { text-align: center; color: var(--gold-dim); letter-spacing: 16px; font-size: 12px; margin: 44px 0; font-family: 'Cinzel', serif; }
+  .scene-break.force { color: var(--force-dim); }
+  .dialogue { color: var(--text-bright); font-weight: 400; }
+  em { color: var(--gold); font-style: normal; font-weight: 400; }
+  em.force { color: var(--force); text-shadow: 0 0 10px rgba(167,139,250,0.3); }
+  em.red { color: var(--red); }
+  .scene-head { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 4px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 28px; margin-top: 52px; border-left: 2px solid var(--gold-dim); padding-left: 14px; }
+  .pull-quote { border-left: 3px solid var(--gold); margin: 36px 0 36px 20px; padding: 4px 0 4px 20px; }
+  .pull-quote p { font-size: clamp(15px, 2.3vw, 19px); font-weight: 400; color: var(--text-bright); font-style: italic; margin-bottom: 6px; line-height: 1.8; }
+  .pull-quote p:last-child { margin-bottom: 0; }
+  .pull-quote.force { border-left-color: var(--force); }
+
+  /* SPECIAL BOXES */
+  .comms { background: rgba(90,174,255,0.04); border: 1px solid rgba(90,174,255,0.2); border-left: 3px solid var(--blue); padding: 14px 18px; margin: 24px 0; font-family: 'Share Tech Mono', monospace; font-size: 12px; letter-spacing: 1px; color: rgba(90,174,255,0.8); line-height: 2; }
+  .comms-label { font-size: 9px; letter-spacing: 4px; color: rgba(90,174,255,0.4); text-transform: uppercase; margin-bottom: 6px; }
+  .alert { border: 1px solid var(--red); border-left: 3px solid var(--red); background: rgba(201,76,76,0.05); padding: 12px 18px; margin: 28px 0; font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 2px; color: var(--red); text-transform: uppercase; }
+  .data-file { background: var(--dark2); border: 1px solid rgba(90,174,255,0.2); border-top: 2px solid var(--blue); padding: 18px 22px; margin: 28px 0; font-family: 'Share Tech Mono', monospace; font-size: 12px; line-height: 2; color: rgba(90,174,255,0.7); }
+  .data-file-header { font-size: 9px; letter-spacing: 4px; color: rgba(90,174,255,0.4); margin-bottom: 10px; text-transform: uppercase; }
+  .data-file .hi { color: var(--text-bright); font-weight: 500; }
+  .data-file .red { color: var(--red); }
+  .force-moment { background: linear-gradient(135deg, rgba(59,42,110,0.15), rgba(59,42,110,0.05)); border: 1px solid var(--force-dim); border-left: 3px solid var(--force); padding: 26px 30px; margin: 36px 0; }
+  .force-moment p { color: var(--text-bright); font-weight: 400; margin-bottom: 0.8em; }
+  .force-moment p:last-child { margin-bottom: 0; }
+  .key-line { text-align: center; padding: 32px 16px; margin: 44px 0; border-top: 1px solid var(--gold-dim); border-bottom: 1px solid var(--gold-dim); position: relative; }
+  .key-line::before, .key-line::after { content: ''; position: absolute; left: 50%; transform: translateX(-50%); width: 44px; height: 2px; background: var(--gold); }
+  .key-line::before { top: -1px; } .key-line::after { bottom: -1px; }
+  .key-line p { font-size: clamp(17px, 3.5vw, 24px); font-weight: 500; color: var(--gold); letter-spacing: 3px; line-height: 1.8; margin-bottom: 0; text-align: center; }
+  .char-appear { border: 1px solid var(--gold-dim); background: var(--dark2); padding: 14px 20px; margin: 28px 0; display: flex; align-items: center; gap: 14px; }
+  .char-appear-icon { font-size: 22px; flex-shrink: 0; color: var(--gold); }
+  .char-appear-name { font-family: 'Cinzel', serif; font-size: 15px; font-weight: 700; color: var(--gold); letter-spacing: 2px; margin-bottom: 2px; }
+  .char-appear-role { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 3px; color: var(--text-dim); text-transform: uppercase; }
+
+  /* CHAPTER END */
+  .ch-end { text-align: center; margin: 64px 0 0; padding-bottom: 80px; border-bottom: 1px solid rgba(201,168,76,0.12); }
+  .ch-end-mark { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 5px; color: var(--text-dim); text-transform: uppercase; }
+
+  /* TOPBAR */
+  .topbar { position: fixed; top: 0; left: 0; right: 0; padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; background: linear-gradient(to bottom, rgba(7,9,13,0.97), transparent); z-index: 50; }
+  .topbar-title { font-family: 'Cinzel', serif; font-size: 13px; letter-spacing: 4px; color: var(--gold); opacity: 0.7; }
+  .back-to-top { font-family: 'Share Tech Mono', monospace; font-size: 9px; letter-spacing: 3px; color: var(--text-dim); text-decoration: none; border: 1px solid var(--gold-dim); padding: 3px 10px; }
+  .back-to-top:hover { color: var(--gold); border-color: var(--gold); }
+
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-title">RENA — Main Story</div>
+  <a class="back-to-top" href="#top">▲ TOP</a>
+</div>
+<div class="page" id="top">
+
+  <!-- COVER -->
+  <div class="cover">
+    <div class="cover-eyebrow">Star Wars Original Novel</div>
+    <div class="cover-title">RENA</div>
+    <div class="cover-sub">The Bounty &amp; The Mandalorian</div>
+    <div class="cover-tagline">「賞金首には、秘密がある」</div>
+    <div class="cover-tag">Chapter 01 — 07 Complete</div>
+  </div>
+
+  <!-- TOC -->
+  <div class="toc">
+    <div class="toc-title">CHAPTERS</div>
+    <ul class="toc-list">
+      <li class="toc-item"><a class="toc-link" href="#ch01">Chapter 01 — BOUNTY「賞金首の女」</a><span class="toc-num">01</span></li>
+      <li class="toc-item"><a class="toc-link" href="#ch02">Chapter 02 — CARGO「嫌な積み荷」</a><span class="toc-num">02</span></li>
+      <li class="toc-item"><a class="toc-link" href="#ch03">Chapter 03 — AMBUSH「伏兵」</a><span class="toc-num">03</span></li>
+      <li class="toc-item"><a class="toc-link" href="#ch04">Chapter 04 — TRUTH「隠されていた名前」</a><span class="toc-num">04</span></li>
+      <li class="toc-item"><a class="toc-link" href="#ch05">Chapter 05 — FORCE「暴走する血」</a><span class="toc-num">05</span></li>
+      <li class="toc-item"><a class="toc-link" href="#ch06">Chapter 06 — COIL「蛇の巣へ」</a><span class="toc-num">06</span></li>
+      <li class="toc-item"><a class="toc-link" href="#ch07">Chapter 07 — WANDERER「また、旅を」</a><span class="toc-num">07</span></li>
+    </ul>
+  </div>
+
+  <!-- ========== CH01 ========== -->
+  <div class="ch-header" id="ch01">
+    <div class="ch-eyebrow">Chapter 01</div>
+    <div class="ch-title">BOUNTY</div>
+    <div class="ch-title-jp">賞金首の女</div>
+    <div class="ch-planet">◈ NESTA PAIM — OUTER RIM</div>
+  </div>
+
+  <div class="scene-head">INT. NESTA PAIM — 市場区画 / 夜</div>
+  <p>ネスタ・パイムの夜は、腐った果実と機械油の匂いがする。アウター・リムの辺境に浮かぶこの惑星に、秩序というものは存在しない。ニュー・リパブリックの旗は立っていても、実効支配は犯罪組織とその用心棒たちのものだ。</p>
+  <p>レナはその雑踏を、全速力で走っていた。左手でフードを押さえながら、狭い路地を折れる。背後で怒鳴り声が上がる。追手は少なくとも三人。</p>
+  <p><span class="dialogue">「そこの女、止まれ！」</span></p>
+  <p>止まるわけがない。市場の露天が立ち並ぶ通りに飛び込み、商品を積んだ台車を蹴り倒してやる。人ごみをすり抜けながら、レナは素早く周囲を把握していた。出口は東と北。北にした。</p>
+  <p>広場に躍り出た瞬間、レナは足を止めた。人がいた。正確には、<em>一人の人影</em>があった。広場の中央、古い噴水の縁に腰を下ろしていた男。鈍い光を放つ金属の鎧。フルフェイスのヘルメット。T字型のバイザーが、こちらをまっすぐ見ていた。</p>
+  <p>マンダロリアン。レナの頭の中で、何かが冷たく警報を鳴らした。</p>
+
+  <div class="scene-break">✦ ✦ ✦</div>
+
+  <p>ディン・ジャリンがこの惑星に降りたのは、三時間前のことだった。依頼書の情報は少ない。名前：レナ。性別：女。年齢：二十代前半と推定。特記事項：<em>要注意。生きたまま引き渡すこと。</em>懸賞金は八万五千クレジット。</p>
+  <p>追跡装置を仕込んだ小型ドローンを放ち、女の動線を先読みしてここに来た。案の定、女は広場に飛び込んできた。ディンは立ち上がり、ゆっくりとその方向へ向いた。表情は見えないが、女の全身が一瞬固まるのがわかった。賢い、とディンは思った。</p>
+
+  <div class="scene-break">✦ ✦ ✦</div>
+
+  <p>レナは後ろを確認する。追手がもうすぐ来る。前には鎧男。<span class="dialogue">「……最悪だ」</span></p>
+  <p>横の路地へ走り込み、壁を蹴って上へ逃げようとした瞬間、腰にワイヤーが巻き付いた。引き戻されて石畳に膝をつく。ガントレットがレナの腕を掴んだ。冷たい、鋼の手。</p>
+  <p><span class="dialogue">「離せ！」</span></p>
+  <p><span class="dialogue">「お前がレナか」</span></p>
+  <p>問いでも確認でもなく、ただの事務的な確認だった。<span class="dialogue">「知らない」</span>とレナは言った。男は拘束リングをレナの手首に押し当てた。カチリ、と音がした。</p>
+  <p><span class="dialogue">「本気？　話を聞いてから判断してもいいんじゃないの」</span></p>
+  <p><span class="dialogue">「後で聞く」</span></p>
+  <p>背後で追手の声がした。路地の出口に三人が現れる。リーダーらしい男が叫んだ。<span class="dialogue">「女を渡せ、マンダロリアン。俺たちの依頼人が先だ。額は倍にしてやる」</span></p>
+  <p>ディンは振り返りもしなかった。<span class="dialogue">「断る」</span></p>
+  <p>その一言のあと、ジェットパックで宙に飛び上がり、追手の頭上を越えて別の路地へ降りた。後ろで銃声が上がるが、追い切れてはいない。</p>
+  <p>レナは引きずられるように走りながら、思った。<em>どれだけ多くの人間が、私を欲しがっているんだ。</em></p>
+  <p>停泊場に着いた。整備の行き届いた一機——レイザークレスト。マンダロリアンはタラップを開け、レナの背中を軽く押した。<span class="dialogue">「乗れ」</span></p>
+  <p><span class="dialogue">「……嫌だって言ったら？」</span></p>
+  <p>沈黙。バイザーがレナをまっすぐに見下ろしている。レナは舌打ちをして、タラップを上がった。</p>
+
+  <div class="scene-break">✦ ✦ ✦</div>
+
+  <p>貨物室に押し込まれた。やがてエンジンが唸りを上げ、ネスタ・パイムが遠くなっていく。レナは目を閉じて息を吐いた。怒鳴りたい気持ちはある。逃げたい気持ちもある。でも今は頭を冷やす必要があった。あの男から情報を引き出す。まず情報が必要だった。</p>
+  <p>船は宇宙へ出た。星が、窓の外を流れていった。</p>
+
+  <div class="ch-end"><div class="ch-end-mark">— End of Chapter 01 —</div></div>
+
+  <!-- ========== CH02 ========== -->
+  <div class="ch-header" id="ch02">
+    <div class="ch-eyebrow">Chapter 02</div>
+    <div class="ch-title">CARGO</div>
+    <div class="ch-title-jp">嫌な積み荷</div>
+    <div class="ch-planet">◈ RAZOR CREST — HYPERSPACE</div>
+  </div>
+
+  <div class="scene-head">INT. RAZOR CREST — 貨物室 / 離陸後〜翌日</div>
+  <p>ハイパースペースに入ると、外の景色は白い光の筋になった。レナはコンテナの上に腰を下ろし、拘束リングをはめられた手首をじっと眺めた。棚の中を確認しながらぐるりと見回した。工具類。予備のパーツ。防護グローブ。そして棚の一番奥に、圧縮食料のパックが整然と並んでいた。几帳面な性格が滲み出るような保管のされ方だった。</p>
+  <p><span class="dialogue">「……意外と丁寧なんだな」</span></p>
+  <p>仕切り扉が開いた。<span class="dialogue">「棚を漁るな」</span></p>
+  <p><span class="dialogue">「別に盗もうとしたわけじゃない。暇だっただけ」</span></p>
+  <p><span class="dialogue">「ねえ、どこに連れて行く気？」</span></p>
+  <p><span class="dialogue">「知る必要はない」</span></p>
+  <p><span class="dialogue">「あるよ。私の話だもん」</span></p>
+  <p><span class="dialogue">「依頼人に引き渡す。それだけだ」</span></p>
+  <p><span class="dialogue">「依頼人って誰？」</span></p>
+  <p><span class="dialogue">「知らない。ギルドの仲介だ。依頼人の名前は記載されていなかった」</span></p>
+  <p><span class="dialogue">「気にならないの？　誰がそれだけの金を出してるのか」</span></p>
+  <p><span class="dialogue">「俺の仕事は届けることだ」</span></p>
+  <p><span class="dialogue">「私みたいな素性も知れない女に、八万五千クレジット積んでくる相手だよ。ろくな依頼人じゃないと思わない？」</span></p>
+  <p>沈黙。男はすぐには立ち去らなかった。それがレナには少し引っかかった。</p>
+  <p><span class="dialogue">「……あんた、名前は？」</span></p>
+  <p><span class="dialogue">「関係ない」</span></p>
+  <p>男は何も言わず、扉を閉めた。</p>
+
+  <div class="scene-break">✦ ✦ ✦</div>
+
+  <p>三度目の脱出を試みたのは、それから二時間後のことだった。一度目は拘束リングを外そうとして電流を喰らった。二度目は工具で扉のロックを解除しようとして五秒で察知された。三度目はコンテナの陰から足を払おうとした。気がついたら壁に背中をつけていた。至近距離にヘルメットがある。</p>
+  <p><span class="dialogue">「三回目だ。次はもっと不自由になる」</span></p>
+  <p><span class="dialogue">「……脅してるの？」</span></p>
+  <p><span class="dialogue">「説明してる」</span></p>
+  <p>一拍置いて、男は手を放した。意外なほど素直だった。レナは壁から身を離した。</p>
+  <p><span class="dialogue">「……なんで私が欲しいのか、本当に知らないの」</span></p>
+  <p><span class="dialogue">「知らない」</span></p>
+  <p><span class="dialogue">「私も知らないんだよね。なんで賞金がかかってるのか、本当にわからない。普通に生きてただけなのに、ある日突然、追われてた。もう半年になる」</span></p>
+  <p>男は何も言わない。でも立ち去りもしなかった。</p>
+  <p><span class="dialogue">「あんたを恨んでるわけじゃない。仕事だもんね。でも——私を依頼人に渡したら、多分、私は死ぬ。もしくはそれ以上に悪いことになる」</span></p>
+  <p>男はゆっくりと壁のコンソールを操作し、貨物室の照明を少し明るくした。それだけだった。扉が閉まる。レナは小さく息を吐いた。話を聞いていた。少なくとも、それは確かだ。</p>
+
+  <div class="scene-break">✦ ✦ ✦</div>
+
+  <p>深夜、仕切り扉がまた開いた。男が入ってきて、黙って圧縮食料のパックをレナの隣に置いた。それから少し離れたコンテナの端に腰を下ろした。</p>
+  <p><span class="dialogue">「……くれるの？」</span></p>
+  <p><span class="dialogue">「食わないなら捨てる」</span></p>
+  <p><span class="dialogue">「食べる」</span></p>
+  <p>パックを開けた。固形の圧縮食料はたいして美味しくなかったが、空腹だったことを思い出した。男は何も食べなかった。ヘルメットを外す気はないらしい。</p>
+  <p><span class="dialogue">「マンダロリアンって、本当にヘルメット外さないんだね」</span></p>
+  <p><span class="dialogue">「他者の前では外さない。掟だ」</span></p>
+  <p><span class="dialogue">「食事もできないじゃん」</span></p>
+  <p><span class="dialogue">「慣れた」</span></p>
+  <p><span class="dialogue">「ディン」</span>と男は言った。</p>
+  <p><span class="dialogue">「え？」</span></p>
+  <p><span class="dialogue">「名前だ。ディン・ジャリン」</span></p>
+  <p>レナは少し驚いて、男の横顔を見た。先ほど「関係ない」と言ったくせに、ちゃんと覚えていてくれたのだ。</p>
+  <p><span class="dialogue">「レナ。苗字はない」</span></p>
+  <p><span class="dialogue">「知ってる」</span></p>
+  <p>それきり、二人は黙った。ハイパースペースを進む船のエンジン音が低く響いている。レナは目を閉じた。今夜くらいは休んでいていいかもしれない、と思った。いつの間にか目が重くなっていた。ふと気がつくと、頭の下に防護グローブが敷かれていた。ディンはすでに操縦席に戻っていた。</p>
+  <div class="pull-quote"><p>不器用にもほどがある。</p></div>
+  <p>レナはもう一度目を閉じた。今度は、わりとすぐに眠れた。</p>
+
+  <div class="ch-end"><div class="ch-end-mark">— End of Chapter 02 —</div></div>
+
+  <!-- ========== CH03 ========== -->
+  <div class="ch-header" id="ch03">
+    <div class="ch-eyebrow">Chapter 03</div>
+    <div class="ch-title">AMBUSH</div>
+    <div class="ch-title-jp">伏 兵</div>
+    <div class="ch-planet">◈ RAZOR CREST — HYPERSPACE / SUBLIGHT</div>
+  </div>
+
+  <div class="scene-head">INT. RAZOR CREST — 貨物室 / 翌朝</div>
+  <p>目が覚めたとき、船はまだハイパースペースの中にいた。レナは体を起こし、頭の下にあった防護グローブを見た。元あった棚に戻した。</p>
+  <p><span class="dialogue">「ねえ、あと何時間かかるの」</span>扉越しに声をかけた。<span class="dialogue">「六時間」</span>と返ってきた。<span class="dialogue">「長いね」</span></p>
+  <p>レナは昨夜の会話を反芻した。帝国残党の流れを汲む組織。あの追手たちがその手下だとすれば、組織が動いているということだ。つまり、レナには二つの方向から手が伸びている。</p>
+  <div class="alert">⚠ WARNING — PROXIMITY ALERT — UNIDENTIFIED VESSELS APPROACHING</div>
+  <p>警報が鳴ったのは、そのときだった。</p>
+
+  <div class="scene-break">✦ ✦ ✦</div>
+
+  <div class="scene-head">INT. RAZOR CREST — 後部銃座 / 交戦中</div>
+  <p>船体が大きく揺れた。ハイパースペースから強制的に引き戻される感覚。二発目の衝撃は着弾だった。仕切り扉が開いた。ディンが入ってくる。<span class="dialogue">「何機いるの？」</span></p>
+  <p><span class="dialogue">「五機。後ろから来ている」</span></p>
+  <p>ディンが貨物室の壁パネルを開け、後部銃座へのアクセスハッチを引き出した。<span class="dialogue">「扱えるか」</span></p>
+  <p><span class="dialogue">「見れば覚える」</span></p>
+  <p>ディンが拘束リングのリリースデバイスを取り出した。カチン、とリングが外れる。<span class="dialogue">「インカムがある。そこから指示を出す」</span></p>
+  <p><span class="dialogue">「了解」</span></p>
+  <p>レナはシャフトに滑り込んだ。球形のガラスドームに収まる一人用の座席で、360度の視界がある。五機の戦闘機がV字編隊を組んで迫ってくるのが見えた。</p>
+  <div class="comms"><div class="comms-label">◈ INTERCOM — DIN DJARIN</div>「後部を頼む。俺は前方とエンジンを見る」</div>
+  <p>最初の二機が右と左から挟み込む形で来る。レナは右を選んで引き金を引いた。翼に直撃。スピンしながら離脱していく。左の機体がビームを撃ってきた。船体が揺れる。</p>
+  <div class="comms"><div class="comms-label">◈ INTERCOM — DIN DJARIN</div>「左後方、エンジン狙え」</div>
+  <p><span class="dialogue">「見えてる！」</span>座席を旋回させ、二発、三発——三発目で機体が制御を失った。残り三機が一塊になって突っ込んでくる。</p>
+  <div class="comms"><div class="comms-label">◈ INTERCOM — DIN DJARIN</div>「固まって来る。散らす。俺が前の一機を引き付ける。残り二機を頼む」</div>
+  <p>ほぼ同時に二発の爆発音。残り一機——ディンが落とした。</p>
+  <div class="comms"><div class="comms-label">◈ INTERCOM — DIN DJARIN</div>「最後の一機は俺が落とした。状況は？」</div>
+  <p><span class="dialogue">「こっちも問題ない。銃座に少し被弾したけど」</span></p>
+  <div class="comms"><div class="comms-label">◈ INTERCOM — DIN DJARIN</div>「怪我は」</div>
+  <p><span class="dialogue">「ない」</span></p>
+  <div class="comms"><div class="comms-label">◈ INTERCOM — DIN DJARIN</div>「……戻ってこい」</div>
+
+  <div class="scene-break">✦ ✦ ✦</div>
+
+  <div class="scene-head">INT. RAZOR CREST — 貨物室 / 交戦後</div>
+  <p>シャフトから這い出ると、ディンがすでに損傷確認をしていた。<span class="dialogue">「エンジンの一基が損傷している。このままでは届かない」</span></p>
+  <p><span class="dialogue">「着陸できる場所は？」</span></p>
+  <p><span class="dialogue">「ここから最も近い惑星はカルヴァーン。無人に近い。補給はできないが、修理の時間は取れる」</span></p>
+  <p><span class="dialogue">「そこに降りよう」</span></p>
+  <p><span class="dialogue">「お前が決めることじゃない」</span></p>
+  <p><span class="dialogue">「でも合理的な提案でしょ」</span></p>
+  <p>ディンはレナを一秒ほど見てから、操縦席へ戻った。それが「了解」の意味だとレナにはわかった。</p>
+  <div class="pull-quote"><p>四機落として「悪くない」。<br>この男の評価基準はいったいどこにあるんだろう。</p></div>
+  <p>でも声が来た。<em>怪我は</em>、と。レナはシャフトに残った自分の手のひらの感覚を確かめるように、ぐっと握った。</p>
+
+  <div class="scene-break">✦ ✦ ✦</div>
+
+  <div class="scene-head">EXT. 惑星カルヴァーン — 荒野 / 夕方〜夜</div>
+  <p>カルヴァーンは赤茶けた岩だらけの惑星だった。修理が終わったのは夜になってからだった。</p>
+  <p>ディンが焚き火を焚いた。岩の陰に燃料タブレットを積んで、火をつけただけのもの。二人で黙って炎を見ていた。</p>
+  <p><span class="dialogue">「ディン」</span></p>
+  <p><span class="dialogue">「なんだ」</span></p>
+  <p><span class="dialogue">「あの三人組、誰の手下だと思う？　ネスタ・パイムで私を追ってたやつら」</span></p>
+  <p><span class="dialogue">「装備を見た。帝国残党の流れを汲む組織のものだ。今のアウター・リムで幾つか確認されている」</span></p>
+  <p><span class="dialogue">「……あんた、ちゃんと見てたんだ」</span></p>
+  <p><span class="dialogue">「仕事だ」</span></p>
+  <p><span class="dialogue">「でもその情報、私に話してくれる必要はないよね」</span></p>
+  <p>また沈黙があった。<span class="dialogue">「……寝ろ」</span>とディンは言った。<span class="dialogue">「まだ時間がかかる」</span></p>
+  <p>それが答えだとわかった。コンテナに横になった。ふと気がつくと、頭の下に何かが敷かれていた。折り畳んだ防護グローブだ。ディンはすでに操縦席に戻っていた。</p>
+  <div class="pull-quote"><p>不器用にもほどがある。</p></div>
+  <p>レナはもう一度目を閉じた。今度は、わりとすぐに眠れた。</p>
+
+  <div class="ch-end"><div class="ch-end-mark">— End of Chapter 03 —</div></div>
+
+  <!-- ========== CH04 ========== -->
+  <div class="ch-header" id="ch04">
+    <div class="ch-eyebrow">Chapter 04</div>
+    <div class="ch-title">TRUTH</div>
+    <div class="ch-title-jp">隠されていた名前</div>
+    <div class="ch-planet">◈ KALVAAN — OUTER RIM</div>
+  </div>
+
+  <div class="scene-head">EXT. カルヴァーン — 焚き火 / 夜</div>
+  <p>修理をしながら、レナは言った。<span class="dialogue">「シャドウ・コイルって、何が目的なの」</span></p>
+  <p><span class="dialogue">「帝国崩壊後に散らばった技術者と将校が中核にいる。今は暗部で資金と武器を集めている。フォースに関連した何かを追っているという話は聞く」</span></p>
+  <p><span class="dialogue">「フォースに関連した何か」</span></p>
+  <p>レナの手が少しだけ止まった。フォース。昔からそうだった。感じることのある、説明のつかない何か。物が動く。危険を予感する。感情が昂ったとき、周囲の空気が変わる。それらをレナはずっと、ただの偶然だと思ってきた——思ってきた、ことにしてきた。</p>
+  <p><span class="dialogue">「……私を欲しがってるのも、そのためかな」</span></p>
+  <p><span class="dialogue">「わからない。だが、可能性はある」</span></p>
+  <p>正直な答えだった。誤魔化しでも慰めでもない。レナはそれが、なぜか少し嬉しかった。</p>
+
+  <div class="scene-break">✦ ✦ ✦</div>
+
+  <p>夜の焚き火で、レナが語った。<span class="dialogue">「私の出身地、ミルンっていう小さな星なんだけど。農業の星。十六のときに出た。それから各地を転々として、傭兵の仕事も少しやって、七年経ったら賞金首になってた」</span></p>
+  <p><span class="dialogue">「七年で何があった」</span></p>
+  <p><span class="dialogue">「半分は普通の話。残り半分は——わからない。ミルンを出てすぐ、ある老人に拾われた。ジェダイだったらしい。その人が言ってた。お前にはフォースの流れが見える、って。三年前に死んだ。病気で。……賞金がかかり始めたのはそのすぐあとから」</span></p>
+  <p>ディンは何も言わなかった。でも、その沈黙は空虚ではなかった。そのとき——岩の向こうで、音がした。</p>
+
+  <div class="scene-break">✦ ✦ ✦</div>
+
+  <div class="scene-head">EXT. カルヴァーン — 岩壁付近 / 夜</div>
+  <p>岩の向こうから、人影が二つ現れた。一人は黒いマンダロリアン装甲。もう一人は細身の女で、腰の両側にブラスターをぶら下げている。</p>
+  <div class="char-appear"><div class="char-appear-icon">◈</div><div><div class="char-appear-name">BOBA FETT</div><div class="char-appear-role">Bounty Hunter — Mandalorian Armor</div></div></div>
+  <div class="char-appear"><div class="char-appear-icon">◈</div><div><div class="char-appear-name">FENNEC SHAND</div><div class="char-appear-role">Master Assassin — Boba's Right Hand</div></div></div>
+  <p>フェネックが言った。<span class="dialogue">「武器を下げて、ディン・ジャリン。話をしに来た」</span></p>
+  <p>ボバが語り始めた。<span class="dialogue">「シャドウ・コイルは三年前から動いている。フォース感応者の探索、確保、それから——実験。俺たちが追っているのはその実験施設だ」</span></p>
+  <p><span class="dialogue">「フォースを機械的に複製しようとしている」</span>とフェネックが続けた。<span class="dialogue">「フォース感応者の素質を抽出して、人工的に兵器に組み込む研究だ。三年前から被験者を集めている」</span></p>
+  <p>三年前。老人が死んだ直後。レナに賞金がかかり始めた時期と、ぴったり重なる。</p>
+  <p><span class="dialogue">「その施設、どこにあるの」</span></p>
+  <p>ボバが初めて、口の端をわずかに上げた。<span class="dialogue">「それを調べている。もう少し時間が要る」</span></p>
+  <p><span class="dialogue">「協力する」</span></p>
+  <p>ディンは何も言わなかった。でも反対もしなかった。カルヴァーンの夜に、四人分の沈黙が落ちた。</p>
+
+  <div class="ch-end"><div class="ch-end-mark">— End of Chapter 04 —</div></div>
+
+  <!-- ========== CH05 ========== -->
+  <div class="ch-header" id="ch05">
+    <div class="ch-eyebrow">Chapter 05</div>
+    <div class="ch-title">FORCE</div>
+    <div class="ch-title-jp">暴走する血</div>
+    <div class="ch-planet">◈ TANSUR STATION — OUTER RIM</div>
+  </div>
+
+  <div class="scene-head">INT. タンサー・ステーション — 部品屋 / 昼〜直後</div>
+  <p>シャドウ・コイルの施設座標を持つ情報屋・ドレックスに接触するため、タンサー・ステーションへ。ディンとレナが正面から、ボバとフェネックが別ルートで動く作戦だった。</p>
+  <p>交渉が進みかけたとき、店の奥の扉が蹴破られた。シャドウ・コイルの兵士が五人なだれ込む。ディンが先頭二人を制圧し、レナも応戦した。五人目が背後から銃口をレナに向けた。逃げ場はない。<em>撃たれる——</em></p>
+
+  <div class="force-moment">
+    <p>そのとき。何かが、レナの内側で<em class="force">弾けた</em>。</p>
+    <p>恐怖でも怒りでもない。それ以前の、もっと原始的な何か。</p>
+    <p>男の体が、見えない何かに押されるように、横へ吹き飛んだ。棚が揺れた。近くのコンテナが滑り、空気が、一瞬だけ凪いだように静止した。そして、また動き出した。</p>
+  </div>
+
+  <p>ディンが振り返った。壁際に吹き飛んだ男。レナが、棚にもたれて立っていた。両手が小刻みに震えていた。</p>
+
+  <div class="scene-break">✦ ✦ ✦</div>
+
+  <div class="scene-head">EXT. タンサー・ステーション — 外壁通路 / 直後</div>
+  <p>ドレックスから座標を受け取り、外に出た。レナは通路の壁に背をつけて座り込んだ。</p>
+  <p><span class="dialogue">「……化け物みたいだった。自分でも何をしたのかわからなかった。ただ——何かが溢れて、止められなくて」</span></p>
+  <p>ディンは答えなかった。しゃがんで、レナと同じ目線になった。</p>
+  <p><span class="dialogue">「今日、お前はその力で止まれたか」</span></p>
+  <p><span class="dialogue">「……男が吹き飛んだ後は、止まった」</span></p>
+  <p><span class="dialogue">「それでいい」</span></p>
+  <p><span class="dialogue">「でも私は——」</span></p>
+  <p><span class="dialogue">「化け物じゃない」</span></p>
+  <p>短く、静かに、断言するように言った。慰めではなく、綺麗事でもなく、ただそういう事実だと言うように。</p>
+  <div class="pull-quote class force"><p>化け物じゃない。<br>短い言葉だが——それだけで、胸の奥で凍りついていたものが、少し溶けた気がした。</p></div>
+  <p>ディンはそのまましばらくそこにいた。ただ、そこにいた。レナはいつの間にか目を閉じていた。今夜は、すぐに眠れた。</p>
+
+  <div class="ch-end"><div class="ch-end-mark">— End of Chapter 05 —</div></div>
+
+  <!-- ========== CH06 ========== -->
+  <div class="ch-header" id="ch06">
+    <div class="ch-eyebrow">Chapter 06</div>
+    <div class="ch-title">COIL</div>
+    <div class="ch-title-jp">蛇の巣へ</div>
+    <div class="ch-planet">◈ VOLCANA — OUTER RIM</div>
+  </div>
+
+  <div class="scene-head">EXT/INT. 惑星ヴォルカナ — 施設 / 夜明け前</div>
+  <p>ヴォルカナは燃えていた。四人で施設に潜入する。ディンとボバが入口制圧、フェネックが上層、レナが最下層のデータ抽出を担当。出発前、ディンが予備のブラスターピストルを取り出してレナに手渡した。<span class="dialogue">「返せ」</span><span class="dialogue">「終わったらね」</span></p>
+  <p>レナはパネルを外し、端子を組み替えてロックを解除した。メインサーバーの端末でデータ転送を開始したとき——一つのファイルが目に入った。</p>
+  <div class="data-file">
+    <div class="data-file-header">◈ SHADOW COIL — SUBJECT FILE / CLASSIFIED</div>
+    SUBJECT ID : SC-0047<br>
+    NAME : <span class="hi">RENA</span>　　ORIGIN : MIRN<br>
+    FORCE SENSITIVITY : <span class="hi">CLASS IV — RARE</span><br>
+    STATUS : <span class="red">TARGET — PRIORITY ACQUISITION</span><br>
+    NOTE : 素質は未覚醒段階。フォース抽出実験の最適候補。生体適合率96.3%。<span class="red">確保次第、即座に移送せよ。</span>
+  </div>
+  <p>頭の中が、奇妙に静かになった。これが答えだった。<span class="dialogue">「見た」</span>とレナは言った。<span class="dialogue">「全部転送する。もう少し」</span></p>
+  <p>撤退中、増援が来た。逃げながら廊下で交戦——銃撃がレナの左腕をかすった。ディンがその前に体で入った。鎧がビームを受けた。そのまま兵士を制圧した後、ディンは腕を確認し、無言で布を巻いてやった。</p>
+
+  <div class="scene-break">✦ ✦ ✦</div>
+
+  <div class="scene-head">EXT. ヴォルカナ — 施設前 / 脱出直後</div>
+  <p>施設から脱出した四人。フェネックが仕掛けた爆発物で施設が崩れる中、ボバがディンの隣に並んだ。</p>
+  <p><span class="dialogue">「依頼はどうする」</span></p>
+  <p>静かな問いかけだった。ディンは少し間を置いた。レナの方は見なかった。でも——</p>
+  <div class="key-line"><p>「届けない」</p></div>
+  <p>ボバが小さく頷いた。フェネックはレナの方を一度だけ見た。その目に珍しく、微かな温度があった。</p>
+  <p>レナは聞こえていた。歩きながら、前を向いたまま聞いていた。</p>
+  <div class="pull-quote"><p>届けない。<br>短い言葉だが——それだけで、半年分の逃走を終わらせた気がした。</p></div>
+
+  <div class="scene-break">✦ ✦ ✦</div>
+
+  <div class="scene-head">INT. RAZOR CREST — 貨物室 / 離陸後</div>
+  <p>腕の手当てをしているレナに、ディンが言った。<span class="dialogue">「貸せ」</span>。包帯を巻き直してから、ディンは言った。<span class="dialogue">「依頼人はシャドウ・コイルだ。施設が潰れた今、依頼は消えた。だから届けない」</span></p>
+  <p><span class="dialogue">「……そういうことにしといてあげる」</span></p>
+  <div class="pull-quote"><p>不器用で頑固で、言い訳まで不器用な男だ。<br>でも——そういう男が、私のために依頼を捨てた。</p></div>
+
+  <div class="ch-end"><div class="ch-end-mark">— End of Chapter 06 —</div></div>
+
+  <!-- ========== CH07 ========== -->
+  <div class="ch-header" id="ch07">
+    <div class="ch-eyebrow">Chapter 07 — Final</div>
+    <div class="ch-title">WANDERER</div>
+    <div class="ch-title-jp">また、旅を</div>
+    <div class="ch-planet">◈ RAZOR CREST — OPEN SPACE</div>
+  </div>
+
+  <div class="scene-head">— ボバとフェネックとの別れ</div>
+  <p>ヴォルカナを離れて半日後、別々の船が宇宙港に並んだ。ボバが言った。<span class="dialogue">「シャドウ・コイルの残党がいれば、俺たちで潰す」</span></p>
+  <p>フェネックがレナの前に立った。<span class="dialogue">「フォースの使い方を知りたいなら、ジェダイを探しなさい。いないわけじゃない」</span></p>
+  <p><span class="dialogue">「……ありがとう」</span></p>
+  <p>二人は自分たちの船へ歩いていった。レナはその背中が見えなくなるまで見ていた。</p>
+
+  <div class="scene-break">✦ ✦ ✦</div>
+
+  <div class="scene-head">INT. RAZOR CREST — 操縦席 / 出発後</div>
+  <p>レイザークレストが宇宙港を離れたとき、レナはめずらしく操縦席の横に座っていた。</p>
+  <p><span class="dialogue">「どこ行くの？」</span></p>
+  <p><span class="dialogue">「決めていない」</span></p>
+  <p><span class="dialogue">「……乗せてよ」</span></p>
+  <p>操縦桿を握ったまま、ディンが少しだけレナを見た。</p>
+  <p><span class="dialogue">「断る理由もない」</span></p>
+  <p>素直じゃない言い方だった。でもレナには、それが<em>「ああ」</em>と同じ意味だとわかった。</p>
+  <div class="pull-quote"><p>断る理由もない。<br>この男のいちばん素直な言い方が、たぶんそれだ。</p></div>
+
+  <div class="scene-break">✦ ✦ ✦</div>
+
+  <p>ハイパースペースへ入る直前、レナは目を細めた。行き先は決まっていない。追われてもいない。縛られてもいない。隣には、無口で不器用で、でも誰より確かにそこにいてくれる男がいる。</p>
+  <p>怖いことは、まだたくさんある。フォースのことも、残党のことも、先のことも何も解決していない。でも——</p>
+  <p style="text-align:center; font-size:clamp(17px,3vw,22px); font-weight:400; color:var(--text-bright); letter-spacing:2px; margin: 40px 0;">今夜は、隣に人がいる。</p>
+  <p>それだけで、宇宙はずいぶん広く感じた。レイザークレストはハイパースペースに入った。星が伸びて、光になった。</p>
+
+  <div style="text-align:center; padding: 60px 0 20px;">
+    <div style="font-family:'Cinzel',serif; font-size:clamp(24px,5vw,40px); font-weight:900; color:var(--gold); letter-spacing:8px; text-shadow:0 0 40px rgba(201,168,76,0.3); margin-bottom:12px;">RENA</div>
+    <div style="font-family:'Share Tech Mono',monospace; font-size:10px; letter-spacing:5px; color:var(--text-dim); margin-bottom:8px;">THE BOUNTY &amp; THE MANDALORIAN — COMPLETE</div>
+    <div style="font-family:'Noto Serif JP',serif; font-size:14px; color:var(--text-dim); font-style:italic; margin-top:20px;">遠い昔、遥か彼方の銀河系で——<br>一人の女が、賞金首をやめた日のこと。</div>
+    <div style="font-family:'Cinzel',serif; font-size:13px; letter-spacing:10px; color:var(--gold-dim); margin-top:32px;">✦ ✦ ✦ ✦ ✦</div>
+  </div>
+
+</div>
+</body>
+</html>
