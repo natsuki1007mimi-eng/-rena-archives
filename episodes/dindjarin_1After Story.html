@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RENA After Story — Complete</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Noto+Serif+JP:wght@300;400;500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a84c;
+    --gold-dim: #5a4518;
+    --dark: #07090d;
+    --dark2: #0c1018;
+    --dark3: #121825;
+    --text: #cdc8be;
+    --text-dim: #6e6a60;
+    --text-bright: #e8e2d6;
+    --warm: #d4a574;
+    --warm-dim: #5a3a1a;
+    --force: #a78bfa;
+    --force-dim: #3b2a6e;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 300;
+    line-height: 2.1;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 8% 12%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 22% 38%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 41% 18%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 58% 55%, rgba(255,255,255,0.25) 0%, transparent 100%),
+      radial-gradient(1px 1px at 73% 8%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 83% 42%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 92% 70%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 15% 78%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 48% 60%, rgba(255,255,255,0.2) 0%, transparent 100%);
+    pointer-events: none; z-index: 0;
+  }
+
+  .page { max-width: 740px; margin: 0 auto; padding: 0 28px 100px; position: relative; z-index: 1; }
+
+  /* ===== COVER ===== */
+  .cover {
+    text-align: center;
+    padding: 100px 0 80px;
+    border-bottom: 1px solid var(--gold-dim);
+    margin-bottom: 60px;
+    opacity: 0;
+    animation: fadeDown 1s ease 0.2s forwards;
+  }
+  .cover::after { content: ''; display: block; width: 80px; height: 2px; background: var(--gold); margin: 0 auto; margin-top: -1px; }
+  .cover-eyebrow { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 6px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 20px; }
+  .cover-title { font-family: 'Cinzel', serif; font-size: clamp(52px, 12vw, 96px); font-weight: 900; color: var(--gold); letter-spacing: 10px; text-shadow: 0 0 60px rgba(201,168,76,0.4); line-height: 1; margin-bottom: 8px; }
+  .cover-sub { font-family: 'Cinzel', serif; font-size: clamp(12px, 2.5vw, 16px); letter-spacing: 5px; color: var(--text-dim); margin-bottom: 40px; }
+  .cover-tag { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--text-dim); border: 1px solid var(--gold-dim); padding: 4px 16px; letter-spacing: 3px; display: inline-block; }
+
+  /* ===== TOC ===== */
+  .toc { background: var(--dark2); border: 1px solid var(--gold-dim); padding: 32px 36px; margin-bottom: 80px; opacity: 0; animation: fadeUp 0.8s ease 0.4s forwards; }
+  .toc-title { font-family: 'Cinzel', serif; font-size: 14px; letter-spacing: 4px; color: var(--gold); margin-bottom: 24px; }
+  .toc-list { list-style: none; }
+  .toc-item { display: flex; justify-content: space-between; align-items: baseline; padding: 8px 0; border-bottom: 1px solid rgba(201,168,76,0.08); }
+  .toc-item:last-child { border-bottom: none; }
+  .toc-link { font-family: 'Noto Serif JP', serif; font-size: 14px; color: var(--text); text-decoration: none; transition: color 0.2s; }
+  .toc-link:hover { color: var(--gold); }
+  .toc-num { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--text-dim); letter-spacing: 2px; }
+
+  /* ===== EPISODE DIVIDER ===== */
+  .ep-header {
+    text-align: center;
+    padding: 80px 0 56px;
+    border-bottom: 1px solid var(--gold-dim);
+    margin-bottom: 60px;
+    position: relative;
+    scroll-margin-top: 60px;
+  }
+  .ep-header::after { content: ''; position: absolute; bottom: -1px; left: 50%; transform: translateX(-50%); width: 80px; height: 2px; background: var(--gold); }
+  .ep-eyebrow { font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 6px; color: var(--gold); text-transform: uppercase; margin-bottom: 10px; }
+  .ep-title { font-family: 'Cinzel', serif; font-size: clamp(32px, 8vw, 60px); font-weight: 900; color: var(--gold); letter-spacing: 8px; line-height: 1; text-shadow: 0 0 50px rgba(201,168,76,0.3); margin-bottom: 8px; }
+  .ep-title-jp { font-size: clamp(13px, 2.5vw, 17px); color: var(--text-dim); letter-spacing: 4px; margin-bottom: 28px; }
+  .ep-planet { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--text-dim); border: 1px solid var(--gold-dim); padding: 3px 14px; letter-spacing: 3px; display: inline-block; }
+
+  /* ===== PROSE ===== */
+  p { font-size: clamp(15px, 2.2vw, 17px); margin-bottom: 1.8em; font-weight: 300; color: var(--text); text-align: justify; }
+  .scene-break { text-align: center; color: var(--gold-dim); letter-spacing: 16px; font-size: 12px; margin: 44px 0; font-family: 'Cinzel', serif; }
+  .dialogue { color: var(--text-bright); font-weight: 400; }
+  em { color: var(--gold); font-style: normal; font-weight: 400; }
+  em.warm { color: var(--warm); }
+  em.force { color: var(--force); text-shadow: 0 0 10px rgba(167,139,250,0.3); }
+  .scene-head { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 4px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 28px; margin-top: 52px; border-left: 2px solid var(--gold-dim); padding-left: 14px; }
+  .pull-quote { border-left: 3px solid var(--gold); margin: 36px 0 36px 20px; padding: 4px 0 4px 20px; }
+  .pull-quote p { font-size: clamp(15px, 2.3vw, 19px); font-weight: 400; color: var(--text-bright); font-style: italic; margin-bottom: 6px; line-height: 1.8; }
+  .pull-quote p:last-child { margin-bottom: 0; }
+  .pull-quote.warm { border-left-color: var(--warm); }
+  .pull-quote.force { border-left-color: var(--force); }
+
+  /* 特殊ボックス */
+  .special-box { border-left: 3px solid var(--gold); background: rgba(201,168,76,0.04); padding: 28px 32px; margin: 36px 0; }
+  .special-box p { color: var(--text-bright); line-height: 2.2; margin-bottom: 1em; }
+  .special-box p:last-child { margin-bottom: 0; }
+  .special-box.warm { border-left-color: var(--warm); background: rgba(212,165,116,0.04); }
+  .special-box.force { border-left-color: var(--force); background: rgba(167,139,250,0.04); }
+
+  .force-flicker { background: rgba(59,42,110,0.08); border-left: 3px solid var(--force-dim); padding: 14px 18px; margin: 28px 0; }
+  .force-flicker p { color: var(--text); font-style: italic; margin-bottom: 0; font-size: 15px; }
+
+  /* 依頼書 */
+  .bounty-sheet { background: var(--dark2); border: 1px solid var(--gold-dim); border-top: 2px solid var(--gold); padding: 18px 22px; margin: 28px 0; font-family: 'Share Tech Mono', monospace; font-size: 12px; line-height: 2; color: var(--text-dim); }
+  .bounty-sheet-header { font-size: 9px; letter-spacing: 5px; color: var(--gold); margin-bottom: 10px; text-transform: uppercase; }
+  .bounty-sheet .val { color: var(--text-bright); }
+
+  /* エピソード間の区切り */
+  .ep-end { text-align: center; margin: 64px 0 0; padding-bottom: 80px; border-bottom: 1px solid rgba(201,168,76,0.15); }
+  .ep-end-mark { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 5px; color: var(--text-dim); text-transform: uppercase; }
+
+  /* 告白ボックス */
+  .confession { background: linear-gradient(135deg, rgba(212,165,116,0.06), rgba(212,165,116,0.02)); border: 1px solid var(--warm-dim); border-left: 3px solid var(--warm); padding: 32px 36px; margin: 44px 0; }
+  .confession p { color: var(--text-bright); font-weight: 300; line-height: 2.3; margin-bottom: 1.2em; font-size: clamp(15px, 2.2vw, 17px); text-align: justify; }
+  .confession p:last-child { margin-bottom: 0; }
+
+  /* TOPBAR */
+  .topbar { position: fixed; top: 0; left: 0; right: 0; padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; background: linear-gradient(to bottom, rgba(7,9,13,0.97), transparent); z-index: 50; }
+  .topbar-title { font-family: 'Cinzel', serif; font-size: 13px; letter-spacing: 4px; color: var(--gold); opacity: 0.7; }
+  .back-to-top { font-family: 'Share Tech Mono', monospace; font-size: 9px; letter-spacing: 3px; color: var(--text-dim); text-decoration: none; border: 1px solid var(--gold-dim); padding: 3px 10px; transition: color 0.2s, border-color 0.2s; }
+  .back-to-top:hover { color: var(--gold); border-color: var(--gold); }
+
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-title">RENA — After Story</div>
+  <a class="back-to-top" href="#top">▲ TOP</a>
+</div>
+
+<div class="page" id="top">
+
+  <!-- COVER -->
+  <div class="cover">
+    <div class="cover-eyebrow">Star Wars Original Novel — After Story</div>
+    <div class="cover-title">RENA</div>
+    <div class="cover-sub">& THE MANDALORIAN</div>
+    <div class="cover-tag">Episode 01 — 10 Complete</div>
+  </div>
+
+  <!-- TOC -->
+  <div class="toc">
+    <div class="toc-title">EPISODES</div>
+    <ul class="toc-list">
+      <li class="toc-item"><a class="toc-link" href="#ep01">Episode 01 — STRAY「ついてくる女」</a><span class="toc-num">01</span></li>
+      <li class="toc-item"><a class="toc-link" href="#ep02">Episode 02 — DEBT「古い貸し」</a><span class="toc-num">02</span></li>
+      <li class="toc-item"><a class="toc-link" href="#ep03">Episode 03 — RAIN「雨の惑星」</a><span class="toc-num">03</span></li>
+      <li class="toc-item"><a class="toc-link" href="#ep04">Episode 04 — NAME「名前のないもの」</a><span class="toc-num">04</span></li>
+      <li class="toc-item"><a class="toc-link" href="#ep05">Episode 05 — SPAR「手合わせ」</a><span class="toc-num">05</span></li>
+      <li class="toc-item"><a class="toc-link" href="#ep06">Episode 06 — FEVER「熱」</a><span class="toc-num">06</span></li>
+      <li class="toc-item"><a class="toc-link" href="#ep07">Episode 07 — MASK「仮面の下」</a><span class="toc-num">07</span></li>
+      <li class="toc-item"><a class="toc-link" href="#ep08">Episode 08 — ALMOST「あと一歩」</a><span class="toc-num">08</span></li>
+      <li class="toc-item"><a class="toc-link" href="#ep09">Episode 09 — GREEN「嫉妬」</a><span class="toc-num">09</span></li>
+      <li class="toc-item"><a class="toc-link" href="#ep10">Episode 10 — MORNING「朝のこと」</a><span class="toc-num">10</span></li>
+    </ul>
+  </div>
+
+  <!-- ========== EP01 ========== -->
+  <div class="ep-header" id="ep01">
+    <div class="ep-eyebrow">Episode 01</div>
+    <div class="ep-title">STRAY</div>
+    <div class="ep-title-jp">ついてくる女</div>
+    <div class="ep-planet">◈ GAVOS CITY — MID RIM</div>
+  </div>
+
+  <div class="scene-head">INT. RAZOR CREST — 操縦席 / 朝</div>
+  <p>ディンが新しい依頼を受けた翌朝、レナは当たり前の顔をして操縦席の横に座っていた。</p>
+  <p><span class="dialogue">「なぜそこにいる」</span></p>
+  <p><span class="dialogue">「暇だから」</span></p>
+  <p><span class="dialogue">「貨物室にいろ」</span></p>
+  <p><span class="dialogue">「あそこ、何もないんだもん。座るとこしかない」</span></p>
+  <p><span class="dialogue">「座るためにある」</span></p>
+  <p><span class="dialogue">「ここにも座れる椅子があるよ」</span></p>
+  <p>ディンは何も言わなかった。追い出しもしなかった。レナはそれを「いてもいい」と解釈することにした。もう慣れた判断基準だ。</p>
+  <p><span class="dialogue">「今回の依頼、どんな感じ？」</span></p>
+  <p><span class="dialogue">「お前には関係ない」</span></p>
+  <p><span class="dialogue">「一緒に行くから関係ある」</span></p>
+  <p><span class="dialogue">「来るとは言っていない」</span></p>
+  <p><span class="dialogue">「ダメ？」</span></p>
+  <p>また沈黙。</p>
+  <div class="pull-quote"><p>この沈黙の種類を、最近だいぶ読み分けられるようになってきた。<br>これは「ダメとは言っていない」の沈黙だ。</p></div>
+  <p>レナは依頼書を引っ張り出して、勝手に読み始めた。</p>
+  <div class="bounty-sheet">
+    <div class="bounty-sheet-header">◈ GUILD BOUNTY — ACTIVE</div>
+    TARGET : <span class="val">ORRIN VASK</span>　　SPECIES : HUMAN<br>
+    CHARGE : <span class="val">FRAUD / THEFT / ASSAULT</span><br>
+    LAST KNOWN LOCATION : <span class="val">GAVOS CITY, MID RIM</span><br>
+    REWARD : <span class="val">12,000 CR — ALIVE ONLY</span><br>
+    NOTE : 変装の達人。複数の偽IDを所持。
+  </div>
+  <p><span class="dialogue">「変装の達人か。顔で探すの難しくない？」</span></p>
+  <p><span class="dialogue">「だから時間がかかる」</span></p>
+  <p><span class="dialogue">「だったら私がいた方が便利じゃない」</span></p>
+  <p><span class="dialogue">「余計なことをしなければ」</span></p>
+  <p><span class="dialogue">「する気はないよ」</span></p>
+  <p><span class="dialogue">「お前はいつもそう言う」</span></p>
+  <p>ディンは前を向き直した。レナは依頼書をたたんでポケットに入れた。同行確定という意味で。</p>
+
+  <div class="scene-break">✦ ✦ ✦</div>
+
+  <div class="scene-head">EXT. ガヴォス・シティ — 商業区 / 昼</div>
+  <p>ガヴォス・シティはうるさい街だった。ミッド・リムの交易都市で、あらゆる種族があらゆるものを売り買いしている。レナはその雑踏を、ディンの少し後ろを歩きながら眺めた。</p>
+  <p><span class="dialogue">「どこから探す？」</span></p>
+  <p><span class="dialogue">「情報屋に当たる。ギャンブル場の近くにいると聞いた」</span></p>
+  <p>路地に入ったところで、ディンが足を止めた。<span class="dialogue">「お前は外で待て」</span></p>
+  <p><span class="dialogue">「なんで」</span></p>
+  <p><span class="dialogue">「マンダロリアンと連れが来たと思われると話が変わる。一人の方が早い」</span></p>
+  <p><span class="dialogue">「わかった。この辺にいる」</span></p>
+  <p>ディンが路地の奥へ消えた。五分ほどして、視界の端に何かが引っかかった。通りを横切る男。歩き方がどこか不自然だ——人混みを避けるのではなく、<em>誰かを避けている</em>ような細かい方向転換がある。</p>
+  <p>レナは依頼書の顔写真を思い出した。変装の達人。顔は変えられる。でも歩き方の癖は、そう簡単には変えられない。</p>
+  <div class="pull-quote"><p>余計なことはしないと言った。<br>でもこれは、余計なことじゃない。たぶん。</p></div>
+  <p>レナは人混みに紛れながら、男の後をつけ始めた。</p>
+
+  <div class="scene-break">✦ ✦ ✦</div>
+
+  <div class="scene-head">EXT. ガヴォス・シティ — 市場裏路地 / 直後</div>
+  <p>男は市場の裏路地に入っていった。レナも続いた。<span class="dialogue">「ちょっと待って」</span>と声をかけると男が振り返った。目の形が依頼書と一致する。<span class="dialogue">「オリン・ヴァスク？」</span></p>
+  <p>男が走り出した。レナも走った。行き止まりに追い込んで、腕を掴んで壁に押しつけた。<span class="dialogue">「大人しくして。ちゃんと生きたまま渡すから」</span></p>
+  <p>男が体をねじった。そこへ足音。ディンだった。首筋にスタンガンを当て、男を制圧した。</p>
+  <p>しばらく沈黙があった。<span class="dialogue">「外で待てと言った」</span></p>
+  <p><span class="dialogue">「待ってたよ。そしたら見つけた」</span></p>
+  <p><span class="dialogue">「……歩き方で気づいたのか」</span></p>
+  <p><span class="dialogue">「変装しても歩き方の癖は残るから」</span></p>
+  <p><span class="dialogue">「……そうだ」</span></p>
+
+  <div class="scene-break">✦ ✦ ✦</div>
+
+  <div class="scene-head">EXT. ガヴォス・シティ — 宇宙港 / 夕方</div>
+  <p>依頼人への引き渡しはあっさり済んだ。タラップを上がりながら、レナは言った。<span class="dialogue">「ね、報酬の一割もらえない？」</span></p>
+  <p><span class="dialogue">「なぜ」</span></p>
+  <p><span class="dialogue">「活躍したから」</span></p>
+  <p><span class="dialogue">「俺が連行した」</span></p>
+  <p><span class="dialogue">「私が見つけて追い詰めた」</span></p>
+  <p><span class="dialogue">「待てと言った」</span></p>
+  <p><span class="dialogue">「だから一割でいいって言ってる」</span></p>
+  <p>ディンは操縦席に座り、離陸準備を始めた。やがて無言でクレジットチップを一枚、コンソールの端に置いた。計算するとだいたい一割二分くらいだった。</p>
+  <p><span class="dialogue">「……多くない？」</span></p>
+  <p><span class="dialogue">「余計なことをしたぶんの罰金を引いた結果だ」</span></p>
+  <div class="pull-quote"><p>罰金を引いて、それでも多め。<br>本当に不器用な男だ。</p></div>
+  <p><span class="dialogue">「次の依頼も一緒に行っていい？」</span></p>
+  <p><span class="dialogue">「待てと言ったら待て」</span></p>
+  <p><span class="dialogue">「それって——次も来るんだろう、ってこと？」</span></p>
+  <p>ディンが前を向き直した。答えはなかった。でもレナは小さく笑って、足を組んで座り直した。船は夜の宇宙へ出ていった。</p>
+
+  <div class="ep-end"><div class="ep-end-mark">— End of Episode 01 —</div></div>
+
+  <!-- ========== EP02 ========== -->
+  <div class="ep-header" id="ep02">
+    <div class="ep-eyebrow">Episode 02</div>
+    <div class="ep-title">DEBT</div>
+    <div class="ep-title-jp">古い貸し</div>
+    <div class="ep-planet">◈ MALDO KREIS — OUTER RIM</div>
+  </div>
+
+  <div class="scene-head">INT. RAZOR CREST — 貨物室 / 翌朝</div>
+  <p>ガヴォス・シティを離れる直前、レナは宇宙港の市場でクレジットチップを使い切った。買ったもの：屋台の揚げ芋（二串）、圧縮じゃない本物のお茶のパック、それから——露天で見つけた小さな青い石のついた髪留め。</p>
+  <p>揚げ芋は船に乗り込む前に一串食べ終えた。残り一串を片手に貨物室に戻ったとき、ディンがそこにいた。</p>
+  <p><span class="dialogue">「それは何だ」</span></p>
+  <p><span class="dialogue">「揚げ芋」</span></p>
+  <p><span class="dialogue">「わかる。なぜ持っている」</span></p>
+  <p><span class="dialogue">「買ったから」</span></p>
+  <p><span class="dialogue">「船に食料はある」</span></p>
+  <p><span class="dialogue">「圧縮食料と揚げ芋は別物だよ。美味しさが違う」</span></p>
+  <p>ディンが視線を下げた。レナの髪に、青い石の髪留めが光っている。<span class="dialogue">「それも買ったのか」</span></p>
+  <p><span class="dialogue">「……実用的なものだよ。髪が邪魔だったから」</span></p>
+  <p><span class="dialogue">「今まで邪魔そうにしていなかったが」</span></p>
+  <p><span class="dialogue">「し、してたよ！　ずっと！」</span></p>
+  <p>ディンはそれ以上何も言わなかった。でもバイザーが一秒だけ、レナの髪留めのあたりで止まった気がした。</p>
+  <div class="pull-quote"><p>半年間ろくにお金を使えなかった反動だ。<br>何が悪い、とは思うが、なぜか少し言い訳したくなる。<br>なんでだろう。</p></div>
+  <p>レナは揚げ芋を一口かじった。うまい。圧縮食料の百倍うまい。それだけで今日はいい日だった。</p>
+
+  <div class="scene-break">✦ ✦ ✦</div>
+
+  <div class="scene-head">INT. RAZOR CREST — 操縦席 / 移動中</div>
+  <p>次の依頼が入ったのは、その日の夕方だった。ギルドからではなく、個人の通信だった。</p>
+  <p><span class="dialogue">「久しぶりだな、マンダロリアン。あのとき俺がお前の命を助けた。その貸しを今日返してほしい」</span></p>
+  <p><span class="dialogue">「カルゴ。六年ぶりだ。内容は」</span></p>
+  <p><span class="dialogue">「娘を取り戻してほしい。組織に連れて行かれた。俺一人では無理だ」</span></p>
+  <p><span class="dialogue">「場所を送れ」</span>とディンは言った。通信が切れた。</p>
+  <p><span class="dialogue">「行くんだね」</span>とレナは言った。</p>
+  <p><span class="dialogue">「ああ」</span></p>
+  <p><span class="dialogue">「私も行く」</span></p>
+  <p><span class="dialogue">「……わかった」</span></p>
+  <p>今回はすんなり了承された。ディンは前を向いたままだったが、すんなり「わかった」と言ってくれたのは、素直に嬉しかった。</p>
+
+  <div class="scene-break">✦ ✦ ✦</div>
+
+  <div class="scene-head">EXT. 惑星マルド・クレイス — 廃工場区画 / 夜</div>
+  <p>カルゴは六十がらみの元賞金稼ぎだった。<span class="dialogue">「娘はリヤ、十七歳だ。借金の担保に取られた」</span></p>
+  <p>作戦はシンプルだった。ディンが正面から注意を引き付け、レナが裏口から三階へ上がってリヤを連れ出す。裏口のロックは二十秒で外した。三階の廊下を進んだとき——</p>
+  <div class="force-flicker"><p>ざわり、と空気が揺れた。<br>扉の手前。廊下の角。そこに誰かがいる——そういう感覚が、足より先に来た。</p></div>
+  <p>レナは足を止め、壁の陰で待った。見張りが通り過ぎた後、扉を開けると少女が膝を抱えていた。<span class="dialogue">「リヤ？　お父さんが呼んでる。一緒に来て」</span></p>
+
+  <div class="scene-break">✦ ✦ ✦</div>
+
+  <div class="scene-head">EXT. 廃工場 — 外 / 直後</div>
+  <p>外でカルゴと合流した。父と娘が抱き合う間、ディンが歩いてきた。<span class="dialogue">「途中で見張りに気づいたけど、うまく避けた」</span></p>
+  <p><span class="dialogue">「気づいたのか」</span></p>
+  <p><span class="dialogue">「なんか……気配がした」</span></p>
+  <p>言ってから、少し口を閉じた。これはたぶん、フォースだ。<span class="dialogue">「……また変なこと言った？」</span></p>
+  <p><span class="dialogue">「変じゃない。役に立った」</span></p>
+  <div class="pull-quote"><p>この男は、私のフォースを怖がらない。<br>不思議なくらい、当たり前みたいに受け取る。</p></div>
+  <p>カルゴが礼を言いに来た。レナは言った。<span class="dialogue">「この星の美味しいご飯、教えてもらえますか」</span></p>
+  <p>カルゴが目を丸くして笑った。ディンがレナを見た。<span class="dialogue">「礼の内容が食事か」</span></p>
+  <p><span class="dialogue">「だって、お金はもう持ってるし」</span></p>
+  <p><span class="dialogue">「ガヴォスで全部使っただろう」</span></p>
+  <p><span class="dialogue">「っ——見てたの！？」</span></p>
+  <p>ディンが前を向いた。返事はなかった。</p>
+  <div class="pull-quote"><p>揚げ芋を買っているのも、髪留めを選んでいるのも、<br>全部見ていたのか、この人は。</p></div>
+  <p>耳が少し熱くなった。レナはそれをカルゴに教えてもらった食堂の方角を確認することで誤魔化した。</p>
+
+  <div class="scene-break">✦ ✦ ✦</div>
+
+  <div class="scene-head">INT. マルド・クレイス — 食堂 / 夜</div>
+  <p>名物の煮込み料理は、頼んだ瞬間から匂いで正解だとわかった。ディンは当然食べなかった。でもテーブルの向かいに座った。</p>
+  <p><span class="dialogue">「……うまい」</span></p>
+  <p><span class="dialogue">「そうか」</span></p>
+  <p><span class="dialogue">「ディンも食べればいいのに」</span></p>
+  <p><span class="dialogue">「掟だ」</span></p>
+  <p>レナはもう一口食べながら、窓の外の夜を見た。<span class="dialogue">「ねえ、カルゴさんって六年前に命を助けてもらったって——どんな話だったの？」</span></p>
+  <p><span class="dialogue">「……依頼の途中で、奴は罠にはまった。俺が先に気づいて引き出した。それだけだ」</span></p>
+  <p><span class="dialogue">「それでも六年間、カルゴさんは覚えてたんだよ。あんたって、人の覚えてる以上のことをしてる気がする」</span></p>
+  <p><span class="dialogue">「余計なことを考えるな」</span></p>
+  <p><span class="dialogue">「褒めてるんだけど」</span></p>
+  <p><span class="dialogue">「食え」</span></p>
+  <p>レナはまた笑って、煮込みの続きに向かった。食堂は温かかった。向かいにヘルメットの男が座っている。変な日常だな、とレナは思った。でも——嫌いじゃない。</p>
+  <div class="pull-quote"><p>半年間、一人で逃げていた。<br>今は向かいに誰かがいる。<br>それだけで、ご飯が三割増しでうまい。</p></div>
+
+  <div class="ep-end"><div class="ep-end-mark">— End of Episode 02 —</div></div>
+
+  <!-- ========== EP03 ========== -->
+  <div class="ep-header" id="ep03">
+    <div class="ep-eyebrow">Episode 03</div>
+    <div class="ep-title">RAIN</div>
+    <div class="ep-title-jp">雨の惑星</div>
+    <div class="ep-planet">◈ RYLOTH — MID RIM</div>
+  </div>
+
+  <div class="scene-head">EXT. 惑星ライロス — 街道 / 昼</div>
+  <p>今回の依頼は、珍しくあっさり終わった。ターゲットは小さな宿場町の酒場にいて、ディンが入っていって五分後に出てきたときにはもう拘束されていた。</p>
+  <p>ライロスは雨の惑星だった。細かい雨が顔に当たる。冷たくはない。むしろ少し温かいくらいの、不思議な雨だった。</p>
+  <p><span class="dialogue">「ミルンの雨は冷たかったな」</span>と呟いた。</p>
+  <p><span class="dialogue">「故郷の話か」</span>とディンが言った。</p>
+  <p><span class="dialogue">「うん。農業の星だから雨は大事で、でも子供のころは雨の日が好きだった。学校が休みになるから」</span></p>
+  <p>ディンは何も言わなかった。でも隣に並んで立ったまま、雨を見ていた。</p>
+
+  <div class="scene-break">✦ ✦ ✦</div>
+
+  <div class="scene-head">INT. ライロス — 宿 / 夕方・夜</div>
+  <p>宿は部屋が一つしか空いていなかった。一悶着あった末に一緒に使うことになった。ディンは椅子に座り、レナはベッドを使った。</p>
+  <p><span class="dialogue">「ディンって、マンダロア出身なの？」</span></p>
+  <p><span class="dialogue">「生まれはそうじゃない。孤児だった。マンダロリアンに拾われた」</span></p>
+  <p><span class="dialogue">「孤児院みたいなところに？」</span></p>
+  <p><span class="dialogue">「クランだ。育てられて、鍛えられて、マンダロリアンになった」</span></p>
+  <p><span class="dialogue">「ずっと守ってきたんだね、その掟」</span></p>
+  <p><span class="dialogue">「それがマンダロリアンだ」</span></p>
+  <p><span class="dialogue">「私はミルンを出たとき、何も持っていかなかったな。あんたが掟を大事にしてるの見てると、自分には何があるんだろうって」</span></p>
+  <p><span class="dialogue">「七年間生き抜いた。それがあるだろう」</span></p>
+  <p><span class="dialogue">「……褒めてる？」</span></p>
+  <p><span class="dialogue">「事実を言った」</span></p>
+  <p><span class="dialogue">「ツンデレだ」</span></p>
+  <p><span class="dialogue">「何だそれは」</span></p>
+  <p><span class="dialogue">「褒め言葉だよ」</span></p>
+  <p>深夜、目が覚めたレナはそっと毛布を一枚引っ張り、ディンの膝の上に置いた。ディンは起きていた。<span class="dialogue">「鎧がある」</span></p>
+  <p><span class="dialogue">「そうじゃなくて」</span></p>
+  <p>毛布は払いのけられなかった。レナはベッドに戻った。</p>
+  <div class="pull-quote"><p>あいつが防護グローブを枕にしてくれた夜のことを、<br>思い出した。<br>お互い様、ということにしておこう。</p></div>
+
+  <div class="scene-break">✦ ✦ ✦</div>
+
+  <div class="scene-head">EXT. ライロス — 街道 / 翌朝</div>
+  <p>朝になると、雨は止んでいた。濡れた石畳に朝の光が差し込んでいる。</p>
+  <p>宿を出て、宇宙港まで歩く間、レナは屋台でライロスの朝ごはん（焼いた穀物を丸めたもの）を買った。ディンが横で見ていた。</p>
+  <p><span class="dialogue">「また食べ物を買った」</span></p>
+  <p><span class="dialogue">「朝ごはんだもん。……一個多く買おうか？」</span></p>
+  <p>しばらく沈黙があった後、<span class="dialogue">「……いらない」</span>と言ったが、レナはもう一個買った。タラップを上がる直前、もう一つをディンの方へ少し差し出した。何も言わなかった。</p>
+  <p>ディンも何も言わなかった。でも受け取った。</p>
+  <div class="pull-quote"><p>受け取ったからといって食べるわけじゃないのはわかってる。<br>でも、受け取ってくれた。<br>それだけで十分だった。</p></div>
+
+  <div class="ep-end"><div class="ep-end-mark">— End of Episode 03 —</div></div>
+
+  <!-- ========== EP04 ========== -->
+  <div class="ep-header" id="ep04">
+    <div class="ep-eyebrow">Episode 04</div>
+    <div class="ep-title">NAME</div>
+    <div class="ep-title-jp">名前のないもの</div>
+    <div class="ep-planet">◈ ERIADU — OUTER RIM</div>
+  </div>
+
+  <div class="scene-head">INT. エリアドゥ — ギルドの詰所 / 昼</div>
+  <p>エリアドゥのギルド詰所で、タヴという賞金稼ぎが話しかけてきた。</p>
+  <p><span class="dialogue">「マンダロリアンと来てたよな。助手か？」</span></p>
+  <p><span class="dialogue">「いや、そういうわけじゃないけど」</span></p>
+  <p><span class="dialogue">「じゃあ何？　パートナー？」</span></p>
+  <p>レナは少し止まった。<span class="dialogue">「……まあ、一緒に動いてる感じで」</span></p>
+  <p><span class="dialogue">「彼女？」</span></p>
+  <p><span class="dialogue">「違う」</span></p>
+  <p><span class="dialogue">「じゃあ何なの、あのマンダロリアンと」</span></p>
+  <p>レナは答えようとして——止まった。助手ではない。パートナーというほどきちんとした話もしていない。友人という感覚とも少し違う。</p>
+  <p><span class="dialogue">「……なんか、一緒にいる人」</span></p>
+  <p>タヴが面白そうに笑った。<span class="dialogue">「そういうのが一番ややこしいやつだよな」</span></p>
+
+  <div class="scene-break">✦ ✦ ✦</div>
+
+  <div class="scene-head">INT. RAZOR CREST — 貨物室 / 夜</div>
+  <p>その夜、レナはなかなか眠れなかった。<em>じゃあ、何なんだろう。</em></p>
+  <p>仕切り扉が少しだけ開いた。<span class="dialogue">「眠れないのか」</span></p>
+  <p><span class="dialogue">「……私とディンって、何なんだろうって」</span></p>
+  <p>ディンが入ってきた。少し離れたところに腰を下ろした。</p>
+  <p><span class="dialogue">「俺にも名前はわからない」</span>と少ししてから言った。<span class="dialogue">「でも——いなくなるとは思っていない」</span></p>
+  <p><span class="dialogue">「……私も。名前はわからないけど。いなくなる気はない」</span></p>
+  <p>沈黙。でも今夜の沈黙は、これまでで一番温かかった。眠りに落ちる直前、ディンがごく小さな声で言った気がした。<span class="dialogue">「……そうか」</span></p>
+  <div class="pull-quote"><p>名前はなくていい、と思った。<br>今はまだ。<br>でもいつか——きっと、見つかる。</p></div>
+
+  <div class="ep-end"><div class="ep-end-mark">— End of Episode 04 —</div></div>
+
+  <!-- ========== EP05 ========== -->
+  <div class="ep-header" id="ep05">
+    <div class="ep-eyebrow">Episode 05</div>
+    <div class="ep-title">SPAR</div>
+    <div class="ep-title-jp">手合わせ</div>
+    <div class="ep-planet">◈ DOCKING BAY / OPEN SPACE</div>
+  </div>
+
+  <div class="scene-head">INT. 格納庫 — 組み手</div>
+  <p>次の依頼の出発まで半日ある朝、レナが格納庫の隅で型の練習をしていた。気づいたらディンが見ていた。<span class="dialogue">「重心がずれている」</span></p>
+  <p>ディンが近づいてきた。<span class="dialogue">「構えを見せろ」</span>。肘の位置を直し、足の幅を広げさせた。確かに重心が安定した。それがいつの間にか組み手になっていた。</p>
+  <p>鎧なしのディンはそれでも理不尽に強かった。三度目、レナは壁際に追い詰められた。腕が壁についた状態でディンの手首を掴んでいる。距離が近い。ヘルメットのバイザーがすぐ目の前にある。</p>
+  <p>心臓が少しうるさかった。<span class="dialogue">「……降参」</span></p>
+  <p>ディンが一歩下がった。<span class="dialogue">「追い詰められたときに止まるな。そこで動け」</span></p>
+  <div class="pull-quote"><p>追い詰められたときに止まるな。<br>……それ、今の私に言ってる？<br>戦闘の話だよね。絶対。</p></div>
+  <p>四度目の組み手で、ディンの腕がレナの腰に回り、逃がさなかった。今度は横並びの形で、ディンの腕がレナの腰の後ろにある。どちらも動かなかった。<span class="dialogue">「……降参」</span></p>
+  <p>腕が離れた後、休憩中にディンが言った。<span class="dialogue">「崩した。さっき、一度崩した。それは本物だ」</span></p>
+  <p><span class="dialogue">「……また褒めてる」</span></p>
+  <p><span class="dialogue">「事実を言った」</span></p>
+  <p>出発前に、レナは言った。<span class="dialogue">「また教えてくれる？」</span></p>
+  <p><span class="dialogue">「お前が止まらなければ」</span></p>
+  <p><span class="dialogue">「止まったのはあの状況が特殊だっただけ」</span></p>
+  <p><span class="dialogue">「どう特殊だった」</span></p>
+  <p><span class="dialogue">「……近かったから」</span></p>
+  <p><span class="dialogue">「次は慣れろ」</span></p>
+  <div class="pull-quote"><p>慣れろ、と言われても。<br>あの人が言うと、なんか意味が変わって聞こえるんだよな。<br>……絶対本人は気づいてないけど。</p></div>
+
+  <div class="ep-end"><div class="ep-end-mark">— End of Episode 05 —</div></div>
+
+  <!-- ========== EP06 ========== -->
+  <div class="ep-header" id="ep06">
+    <div class="ep-eyebrow">Episode 06</div>
+    <div class="ep-title">FEVER</div>
+    <div class="ep-title-jp">熱</div>
+    <div class="ep-planet">◈ RAZOR CREST — OPEN SPACE</div>
+  </div>
+
+  <div class="scene-head">INT. RAZOR CREST — 貨物室 / 朝〜深夜</div>
+  <p>前日の惑星で雨に降られ、そのまま寝たレナは翌朝起き上がれなかった。ディンが確認しに来た。<span class="dialogue">「顔が赤い」</span>。右手のガントレットを外した。素手の手のひらが額に当たった。大きくて、冷たかった。<span class="dialogue">「……熱い」</span></p>
+  <div class="pull-quote"><p>素手だった。<br>この人が素手で触れるのを、初めて見た気がする。<br>冷たくて——でも、なんか、安心した。</p></div>
+  <p>解熱剤を飲ませてもらい、横になるよう言われた。ディンは操縦席に戻らず、コンテナの端に座ってそこにいた。<span class="dialogue">「……いてくれるの？」</span></p>
+  <p><span class="dialogue">「見ていないと悪化する」</span></p>
+  <p><span class="dialogue">「看病してくれてる」</span></p>
+  <p><span class="dialogue">「状態管理だ」</span></p>
+  <p><span class="dialogue">「……どっちでも嬉しい」</span></p>
+  <p>熱が上がった夕方、ガントレット越しに触れたディンに言った。<span class="dialogue">「さっきは素手だったのに」</span>。少しして、またガントレットが外れる音がした。素手の手のひらが戻ってきた。</p>
+  <p>深夜、目が覚めるとディンがすぐそこに座っていた。レナは手を伸ばして、ディンの手の甲にそっと指先を乗せた。ディンは手を引かなかった。静かに、レナの指を包んだ。</p>
+  <div class="pull-quote"><p>熱のせいだ。<br>熱のせいで、全部が鮮明に感じる。<br>この手の冷たさも、この距離も、この静けさも。<br>——全部、熱のせいだ。</p></div>
+  <p>翌朝、熱は引いた。<span class="dialogue">「昨日、手……つないでたよね」</span></p>
+  <p><span class="dialogue">「……体温を確認していた」</span></p>
+  <p><span class="dialogue">「そういうことにしといてあげる」</span></p>
+  <div class="pull-quote"><p>体温の確認。夜通し、手をつないで。<br>この人の言い訳は、いつも愛おしいくらい下手くそだ。</p></div>
+
+  <div class="ep-end"><div class="ep-end-mark">— End of Episode 06 —</div></div>
+
+  <!-- ========== EP07 ========== -->
+  <div class="ep-header" id="ep07">
+    <div class="ep-eyebrow">Episode 07</div>
+    <div class="ep-title">MASK</div>
+    <div class="ep-title-jp">仮面の下</div>
+    <div class="ep-planet">◈ UNNAMED PLANET — OUTER RIM</div>
+  </div>
+
+  <div class="scene-head">EXT. / INT. 廃墟・外 / 夕方</div>
+  <p>依頼中、崩れた通路で爆発物を使われた。瓦礫はディンの背中と頭部に直撃した。レナは無事だった。外に出ると、ディンの足元が定まっていない。後頭部に大きな凹みがある。</p>
+  <p><span class="dialogue">「頭を打ってる。ヘルメットの中を確認しないといけない」</span></p>
+  <p>長い沈黙の後、<span class="dialogue">「……お前だから、外せた」</span>とディンが言い、後頭部だけ向けて外した。</p>
+  <p>レナは後頭部だけを見た。日に焼けた肌。短く刈り込まれた黒髪。それだけで、息が少し止まった。処置をしながら聞いた。<span class="dialogue">「……痛い？」</span></p>
+  <p>ヘルメット越しではない、生の声が返ってきた。低くて、落ち着いていて——少しだけ、柔らかかった。</p>
+  <p>処置が終わり、ヘルメットが戻った後、ディンが言った。<span class="dialogue">「……ありがとう」</span></p>
+  <p><span class="dialogue">「お互い様だよ。庇ってくれたでしょ」</span></p>
+  <p><span class="dialogue">「怒っているか。掟を……破ったから」</span></p>
+  <p><span class="dialogue">「怒ってない。むしろ——信じてくれてありがとう、って思ってる」</span></p>
+  <div class="pull-quote"><p>信じてくれた。<br>選択肢の中に私がいた。<br>それだけで、胸がいっぱいだった。</p></div>
+  <p>船に戻る夜、ディンが言った。<span class="dialogue">「……お前の前だから、かもしれない」</span></p>
+  <p>レナは息を飲んだ。ゆっくりと手を伸ばし、操縦桿を握るディンの手の甲に指先を乗せた。ディンは引かなかった。そのまま、しばらく飛んだ。</p>
+
+  <div class="ep-end"><div class="ep-end-mark">— End of Episode 07 —</div></div>
+
+  <!-- ========== EP08 ========== -->
+  <div class="ep-header" id="ep08">
+    <div class="ep-eyebrow">Episode 08</div>
+    <div class="ep-title">ALMOST</div>
+    <div class="ep-title-jp">あと一歩</div>
+    <div class="ep-planet">◈ RAZOR CREST — DRIFTING</div>
+  </div>
+
+  <div class="scene-head">INT. RAZOR CREST — 操縦席 / 深夜</div>
+  <p>エンジンが止まった深夜。自動修復まで数時間、やることのない夜。レナが聞いた。<span class="dialogue">「ディン。あの夜のこと、後悔してる？」</span></p>
+  <p><span class="dialogue">「後悔はしていない。……お前だから、外せた」</span></p>
+  <p>少ししてレナが言った。<span class="dialogue">「私のこと、どう思ってる」</span></p>
+  <p><span class="dialogue">「こっちを向いてくれ」</span></p>
+  <p>ディンが口を開いた。<span class="dialogue">「言葉がうまくない。だから——うまく言えるかわからないが。お前がいない場所を、最近うまく想像できない。船に戻ったとき、お前がいると——それだけで、いい」</span></p>
+  <p><span class="dialogue">「……私も。あんたの隣が、一番落ち着く。ここにいると、大丈夫な気がする」</span></p>
+  <p>ディンの手が、レナの頬に当たった。素手だった。震えていた。<span class="dialogue">「……目を、閉じてくれ」</span></p>
+  <p>レナは目を閉じた。金属音がした。額に、温かいものが触れた。ヘルメットではない。素肌の額だった。おでこをそっとくっつけるように。それだけだった。キスではなかった。でもそれ以上のものがあった。</p>
+  <p>ディンが離れた。ヘルメットが戻った。そしてレナの手を、静かに握った。今度は確かめるでもなく、ただ握った。</p>
+  <div class="pull-quote"><p>名前のないものに、今夜、少しだけ形ができた気がした。</p></div>
+
+  <div class="ep-end"><div class="ep-end-mark">— End of Episode 08 —</div></div>
+
+  <!-- ========== EP09 ========== -->
+  <div class="ep-header" id="ep09">
+    <div class="ep-eyebrow">Episode 09</div>
+    <div class="ep-title">GREEN</div>
+    <div class="ep-title-jp">嫉 妬</div>
+    <div class="ep-planet">◈ CORELLIA — CORE WORLDS</div>
+  </div>
+
+  <div class="scene-head">EXT. コレリア — 港街〜夕暮れ</div>
+  <p>情報収集で別行動中、レナは男に声をかけられた。<span class="dialogue">「彼氏？」</span>と聞かれ、<span class="dialogue">「……まあ」</span>と答えた。自分でも驚いた。否定しなかった。</p>
+  <p>合流したディンは、バイザーをレナが来た市場の方向へ向けた。<span class="dialogue">「……男と話していたな」</span></p>
+  <p><span class="dialogue">「見てたの？」</span></p>
+  <p><span class="dialogue">「たまたま見えた」</span></p>
+  <p><span class="dialogue">「声をかけられただけだよ。断った」</span></p>
+  <p><span class="dialogue">「……そうか」</span></p>
+  <p>声が、いつもより低かった。<span class="dialogue">「もしかして——嫉妬じゃないの？」</span></p>
+  <p><span class="dialogue">「……かもしれない」</span></p>
+  <p>認めた。</p>
+  <p><span class="dialogue">「あの男に、彼氏がいるって言った。嘘じゃない気がして。だから否定しなかった」</span></p>
+  <p><span class="dialogue">「……お前がそう言うなら、嘘じゃない」</span></p>
+
+  <div class="scene-break">✦ ✦ ✦</div>
+
+  <div class="scene-head">EXT. コレリア — 路地 / 夕暮れ</div>
+  <div class="special-box">
+    <p>路地に入ったのは、どちらからともなくだった。夕日の最後の光が差し込んでいた。レナはディンの前に立った。</p>
+    <p>ディンが静かに言った。<span class="dialogue">「……目を、閉じてくれ」</span></p>
+    <p>低くて、かすかに掠れた声だった。レナは何も聞かなかった。目を閉じた。金属音がした。頬に、大きな手のひらが触れた。素手だった。震えていた。唇が、触れた。ほんの一瞬だった。でも確かに、そこにあった。</p>
+    <p>離れた。金属音。ヘルメットが戻った。ディンの手が、レナの手を握った。今度は迷いなく、はっきりと。</p>
+  </div>
+
+  <p>夜、船に戻って。<span class="dialogue">「さっきのこと——後悔してない？」</span></p>
+  <p><span class="dialogue">「していない」</span></p>
+  <p>即答だった。今度は早すぎなかった。レナは笑った。<span class="dialogue">「よかった」</span></p>
+  <p>作戦の説明が終わって二人で船を出た。手をつないだまま、コレリアの夜道を歩いた。それが当たり前みたいに。</p>
+  <div class="pull-quote"><p>名前のないものに、今夜、名前がついた。<br>この人の隣が、私の場所だ。</p></div>
+
+  <div class="ep-end"><div class="ep-end-mark">— End of Episode 09 —</div></div>
+
+  <!-- ========== EP10 ========== -->
+  <div class="ep-header" id="ep10">
+    <div class="ep-eyebrow">Episode 10</div>
+    <div class="ep-title">MORNING</div>
+    <div class="ep-title-jp">朝のこと</div>
+    <div class="ep-planet">◈ CORELLIA → RAZOR CREST</div>
+  </div>
+
+  <div class="scene-head">EXT. コレリア — 宿の前〜朝市 / 翌朝</div>
+  <p>朝になった。廊下に出ると、ディンがすでにいた。壁にもたれて立っていた。</p>
+  <p><span class="dialogue">「おはよう」</span></p>
+  <p><span class="dialogue">「……ああ」</span></p>
+  <div class="pull-quote"><p>この人は、廊下で待っていてくれる人だったんだ。<br>知らなかった。</p></div>
+  <p>朝市で、コレリア原産の赤い実を見つけた。<span class="dialogue">「これ何だろう」</span></p>
+  <p><span class="dialogue">「コレリア原産の果物だ。酸い」</span></p>
+  <p><span class="dialogue">「食べたことあるの？」</span></p>
+  <p><span class="dialogue">「昔、この星に来たことがある」</span></p>
+  <p>かじると確かに酸っぱかった。でも後から甘みが来た。<span class="dialogue">「酸いけど美味しい」</span></p>
+
+  <div class="scene-break">✦ ✦ ✦</div>
+
+  <div class="scene-head">EXT. コレリア — 港を見渡す丘 / 朝</div>
+  <div class="confession">
+    <p><span class="dialogue">「ネスタ・パイムで捕まったとき、正直最悪だと思った。でも——ディンが初めて名前を教えてくれたとき。ちょっとだけ、この人はもしかして悪くないかもって思った」</span></p>
+    <p><span class="dialogue">「一緒に逃げて、戦って、色んな惑星に行って、揚げ芋食べて……気づいたら、ディンがいない場所の想像ができなくなってた。だから——ちゃんと言う。好きだよ、ディン。あんたのことが」</span></p>
+    <p>長い沈黙があった。ディンがゆっくりと口を開いた。</p>
+    <p><span class="dialogue">「……俺も。お前がいない場所には、戻りたくない。それが答えだ」</span></p>
+  </div>
+  <p>レナはディンの腕に、そっと頭を預けた。鎧は硬かった。でもディンは払いのけなかった。ほんの少しだけ、レナの方に傾いた。</p>
+  <div class="pull-quote"><p>好きだと言えた。<br>返ってきた言葉は短かったけど、<br>この人らしくて——それが一番よかった。</p></div>
+
+  <div class="scene-break">✦ ✦ ✦</div>
+
+  <div class="scene-head">INT. RAZOR CREST — 操縦席 / 夜</div>
+  <p>ターゲットの捕縛を終えて船に戻ると、ディンがコンソールの端に何かを置いた。コレリア原産の赤い果物だった。</p>
+  <p><span class="dialogue">「……買ってきたの？」</span></p>
+  <p><span class="dialogue">「捕縛の前に」</span></p>
+  <p><span class="dialogue">「美味しいって言ったから？」</span></p>
+  <p>ディンは前を向いて操縦桿を握った。答えなかった。でも——それが答えだった。</p>
+  <p><span class="dialogue">「ありがとう」</span></p>
+  <p><span class="dialogue">「……ああ」</span></p>
+  <p>船が宇宙へ出た。星が流れていく。レナは果物を食べながら、窓の外を見た。隣にディンがいる。目を閉じた。エンジンの音が子守唄みたいだった。</p>
+  <div class="pull-quote"><p>好きな人が隣にいる。<br>ただそれだけで、どこへ行っても——<br>ここが、帰る場所になる。</p></div>
+
+  <div class="ep-end"><div class="ep-end-mark">— End of Episode 10 —</div></div>
+
+  <div style="text-align:center; padding: 60px 0 20px;">
+    <div style="font-family:'Cinzel',serif; font-size:13px; letter-spacing:5px; color:var(--gold-dim);">✦ &nbsp; To be continued &nbsp; ✦</div>
+  </div>
+
+</div>
+</body>
+</html>
