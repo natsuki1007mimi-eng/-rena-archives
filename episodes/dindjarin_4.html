@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RENA — Roots Arc Complete</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Noto+Serif+JP:wght@300;400;500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a84c; --gold-dim: #5a4518;
+    --dark: #07090d; --dark2: #0c1018;
+    --text: #cdc8be; --text-dim: #6e6a60; --text-bright: #e8e2d6;
+    --force: #a78bfa; --force-dim: #3b2a6e;
+    --green: #6ab187; --green-dim: #1e3a2a;
+    --sol: #7ec8e3; --sol-dim: #1a3a4a;
+    --steel: #9aacb8; --steel-dim: #2a3840;
+    --warm: #d4a574; --warm-dim: #5a3a1a;
+    --red: #c94c4c; --red-dim: #5a1818;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--dark); color: var(--text); font-family: 'Noto Serif JP', serif; font-weight: 300; line-height: 2.1; overflow-x: hidden; }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 8% 12%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 25% 40%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 45% 20%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 60% 60%, rgba(255,255,255,0.25) 0%, transparent 100%),
+      radial-gradient(1px 1px at 75% 10%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 85% 45%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 15% 75%, rgba(255,255,255,0.2) 0%, transparent 100%);
+    pointer-events: none; z-index: 0;
+  }
+  .page { max-width: 740px; margin: 0 auto; padding: 0 28px 100px; position: relative; z-index: 1; }
+
+  /* COVER */
+  .cover { text-align: center; padding: 100px 0 80px; border-bottom: 1px solid var(--gold-dim); margin-bottom: 60px; opacity: 0; animation: fadeDown 1s ease 0.2s forwards; position: relative; }
+  .cover::after { content: ''; display: block; width: 80px; height: 2px; background: var(--gold); margin: -1px auto 0; }
+  .cover-eyebrow { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 6px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 20px; }
+  .cover-title { font-family: 'Cinzel', serif; font-size: clamp(52px, 12vw, 96px); font-weight: 900; color: var(--gold); letter-spacing: 10px; text-shadow: 0 0 60px rgba(201,168,76,0.4); line-height: 1; margin-bottom: 8px; }
+  .cover-sub { font-family: 'Cinzel', serif; font-size: clamp(12px, 2.5vw, 16px); letter-spacing: 5px; color: var(--text-dim); margin-bottom: 12px; }
+  .cover-tagline { font-size: 14px; color: var(--text-dim); font-style: italic; margin-bottom: 40px; }
+  .cover-tag { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--gold); border: 1px solid var(--gold-dim); padding: 4px 16px; letter-spacing: 3px; display: inline-block; }
+
+  /* TOC */
+  .toc { background: var(--dark2); border: 1px solid var(--gold-dim); padding: 32px 36px; margin-bottom: 80px; opacity: 0; animation: fadeUp 0.8s ease 0.4s forwards; }
+  .toc-title { font-family: 'Cinzel', serif; font-size: 14px; letter-spacing: 4px; color: var(--gold); margin-bottom: 24px; }
+  .toc-list { list-style: none; }
+  .toc-item { display: flex; justify-content: space-between; align-items: baseline; padding: 8px 0; border-bottom: 1px solid rgba(201,168,76,0.08); }
+  .toc-item:last-child { border-bottom: none; }
+  .toc-link { font-size: 14px; color: var(--text); text-decoration: none; }
+  .toc-link:hover { color: var(--gold); }
+  .toc-num { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--text-dim); letter-spacing: 2px; }
+
+  /* EP HEADER */
+  .ep-header { text-align: center; padding: 80px 0 56px; border-bottom: 1px solid var(--gold-dim); margin-bottom: 60px; position: relative; scroll-margin-top: 60px; }
+  .ep-header::after { content: ''; position: absolute; bottom: -1px; left: 50%; transform: translateX(-50%); width: 80px; height: 2px; background: var(--gold); }
+  .ep-eyebrow { font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 6px; color: var(--gold); text-transform: uppercase; margin-bottom: 10px; }
+  .ep-title { font-family: 'Cinzel', serif; font-size: clamp(32px, 8vw, 60px); font-weight: 900; color: var(--gold); letter-spacing: 8px; line-height: 1; text-shadow: 0 0 50px rgba(201,168,76,0.3); margin-bottom: 8px; }
+  .ep-title.steel { color: var(--steel); text-shadow: 0 0 50px rgba(154,172,184,0.3); }
+  .ep-title.red { color: #e87070; text-shadow: 0 0 50px rgba(200,80,80,0.3); }
+  .ep-title.warm { color: var(--warm); text-shadow: 0 0 50px rgba(212,165,116,0.3); }
+  .ep-title-jp { font-size: clamp(13px, 2.5vw, 17px); color: var(--text-dim); letter-spacing: 4px; margin-bottom: 28px; }
+  .ep-planet { display: inline-block; font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--text-dim); border: 1px solid var(--gold-dim); padding: 3px 14px; letter-spacing: 3px; }
+
+  /* PROSE */
+  p { font-size: clamp(15px, 2.2vw, 17px); margin-bottom: 1.8em; font-weight: 300; color: var(--text); text-align: justify; }
+  .scene-break { text-align: center; color: var(--gold-dim); letter-spacing: 16px; font-size: 12px; margin: 44px 0; font-family: 'Cinzel', serif; }
+  .dialogue { color: var(--text-bright); font-weight: 400; }
+  .dialogue.sol { color: var(--sol); font-weight: 400; }
+  .dialogue.clan { color: var(--steel); font-weight: 400; }
+  em { color: var(--gold); font-style: normal; font-weight: 400; }
+  em.force { color: var(--force); font-style: normal; text-shadow: 0 0 10px rgba(167,139,250,0.3); }
+  em.green { color: var(--green); font-style: normal; }
+  em.warm { color: var(--warm); font-style: normal; }
+  em.steel { color: var(--steel); font-style: normal; }
+  .scene-head { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 4px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 28px; margin-top: 52px; border-left: 2px solid var(--gold-dim); padding-left: 14px; }
+  .pull-quote { border-left: 3px solid var(--gold); margin: 36px 0 36px 20px; padding: 4px 0 4px 20px; }
+  .pull-quote p { font-size: clamp(15px, 2.3vw, 19px); font-weight: 400; color: var(--text-bright); font-style: italic; margin-bottom: 6px; line-height: 1.8; }
+  .pull-quote p:last-child { margin-bottom: 0; }
+  .pull-quote.sol { border-left-color: var(--sol); }
+  .pull-quote.green { border-left-color: var(--green); }
+  .pull-quote.steel { border-left-color: var(--steel); }
+  .pull-quote.warm { border-left-color: var(--warm); }
+  .pull-quote.force { border-left-color: var(--force); }
+
+  /* SPECIAL BOXES */
+  .chaos-box, .lesson-box { background: linear-gradient(135deg, rgba(26,58,74,0.1), rgba(30,58,42,0.08)); border: 1px solid rgba(126,200,227,0.15); border-left: 3px solid var(--sol); padding: 20px 24px; margin: 24px 0; }
+  .chaos-box p, .lesson-box p { color: var(--text-bright); line-height: 2.1; margin-bottom: 0.6em; font-size: clamp(14px, 2vw, 16px); }
+  .chaos-box p:last-child, .lesson-box p:last-child { margin-bottom: 0; }
+  .info-box { background: var(--dark2); border: 1px solid var(--gold-dim); border-left: 3px solid var(--gold); padding: 22px 26px; margin: 28px 0; }
+  .info-box p { color: var(--text-bright); line-height: 2.1; margin-bottom: 0.8em; }
+  .info-box p:last-child { margin-bottom: 0; }
+  .force-track { background: linear-gradient(135deg, rgba(59,42,110,0.12), rgba(59,42,110,0.04)); border: 1px solid var(--force-dim); border-left: 3px solid var(--force); padding: 24px 28px; margin: 32px 0; }
+  .force-track p { color: var(--text-bright); line-height: 2.2; margin-bottom: 0.9em; }
+  .force-track p:last-child { margin-bottom: 0; }
+  .clan-scene, .mira-lena, .mira-final { background: linear-gradient(135deg, rgba(42,56,64,0.15), rgba(42,56,64,0.04)); border: 1px solid var(--steel-dim); border-left: 3px solid var(--steel); padding: 24px 28px; margin: 32px 0; }
+  .clan-scene p, .mira-lena p, .mira-final p { color: var(--text-bright); line-height: 2.2; margin-bottom: 1em; }
+  .clan-scene p:last-child, .mira-lena p:last-child, .mira-final p:last-child { margin-bottom: 0; }
+  .char-appear { border: 1px solid var(--steel-dim); background: var(--dark2); padding: 14px 20px; margin: 24px 0; display: flex; align-items: center; gap: 14px; }
+  .char-appear-icon { font-size: 20px; flex-shrink: 0; color: var(--steel); }
+  .char-appear-name { font-family: 'Cinzel', serif; font-size: 15px; font-weight: 700; color: var(--steel); letter-spacing: 2px; margin-bottom: 2px; }
+  .char-appear-role { font-family: 'Share Tech Mono', monospace; font-size: 9px; letter-spacing: 3px; color: var(--text-dim); text-transform: uppercase; }
+  .grogu-support { background: linear-gradient(135deg, rgba(59,42,110,0.1), rgba(30,58,42,0.08)); border: 1px solid rgba(167,139,250,0.15); border-left: 3px solid var(--force); padding: 18px 22px; margin: 24px 0; }
+  .grogu-support p { color: var(--text-bright); font-style: italic; font-size: 15px; line-height: 2; margin-bottom: 0.4em; }
+  .grogu-support p:last-child { margin-bottom: 0; }
+  .rescue-moment { background: linear-gradient(135deg, rgba(106,177,135,0.08), rgba(106,177,135,0.02)); border: 1px solid var(--green-dim); border-left: 3px solid var(--green); padding: 24px 28px; margin: 32px 0; }
+  .rescue-moment p { color: var(--text-bright); line-height: 2.2; margin-bottom: 0.9em; }
+  .rescue-moment p:last-child { margin-bottom: 0; }
+  .comms { background: rgba(90,174,255,0.04); border: 1px solid rgba(90,174,255,0.2); border-left: 3px solid #5aaeff; padding: 10px 14px; margin: 16px 0; font-family: 'Share Tech Mono', monospace; font-size: 12px; color: rgba(90,174,255,0.8); line-height: 2; }
+  .comms-label { font-size: 9px; letter-spacing: 4px; color: rgba(90,174,255,0.4); text-transform: uppercase; margin-bottom: 4px; }
+  .key-line { text-align: center; padding: 28px 16px; margin: 44px 0; border-top: 1px solid var(--gold-dim); border-bottom: 1px solid var(--gold-dim); position: relative; }
+  .key-line::before, .key-line::after { content: ''; position: absolute; left: 50%; transform: translateX(-50%); width: 44px; height: 2px; background: var(--gold); }
+  .key-line::before { top: -1px; } .key-line::after { bottom: -1px; }
+  .key-line p { font-size: clamp(16px, 3.5vw, 22px); font-weight: 500; color: var(--gold); letter-spacing: 3px; line-height: 1.8; margin-bottom: 0; text-align: center; text-shadow: 0 0 20px rgba(201,168,76,0.3); }
+  .the-way { text-align: center; padding: 32px 16px; margin: 40px 0; }
+  .the-way-main { font-family: 'Cinzel', serif; font-size: clamp(18px, 4vw, 26px); font-weight: 700; color: var(--steel); letter-spacing: 6px; text-shadow: 0 0 20px rgba(154,172,184,0.3); margin-bottom: 10px; }
+  .the-way-echo { font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 6px; color: var(--text-dim); text-transform: uppercase; }
+  .grogu-action { background: linear-gradient(135deg, rgba(30,58,42,0.15), rgba(30,58,42,0.04)); border: 1px solid var(--green-dim); border-left: 3px solid var(--green); padding: 18px 22px; margin: 24px 0; }
+  .grogu-action p { color: var(--text-bright); line-height: 2.1; margin-bottom: 0.7em; }
+  .grogu-action p:last-child { margin-bottom: 0; }
+  .warm-scene { background: linear-gradient(135deg, rgba(90,58,26,0.1), rgba(90,58,26,0.03)); border-left: 3px solid var(--warm); padding: 24px 28px; margin: 32px 0; }
+  .warm-scene p { color: var(--text-bright); line-height: 2.3; margin-bottom: 1em; }
+  .warm-scene p:last-child { margin-bottom: 0; }
+  .arc-end-box { text-align: center; padding: 48px 24px; margin: 48px 0; border-top: 1px solid rgba(201,168,76,0.2); border-bottom: 1px solid rgba(201,168,76,0.2); }
+  .arc-end-box p { font-size: clamp(16px, 2.8vw, 21px); font-weight: 400; color: var(--text-bright); line-height: 2.2; letter-spacing: 2px; margin-bottom: 14px; text-align: center; }
+  .arc-end-box p:last-child { margin-bottom: 0; }
+  .action p { margin-bottom: 0.8em; line-height: 1.8; }
+
+  /* EP END */
+  .ep-end { text-align: center; margin: 60px 0 0; padding-bottom: 80px; border-bottom: 1px solid rgba(201,168,76,0.1); }
+  .ep-end-mark { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 5px; color: var(--text-dim); text-transform: uppercase; }
+
+  /* TOPBAR */
+  .topbar { position: fixed; top: 0; left: 0; right: 0; padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; background: linear-gradient(to bottom, rgba(7,9,13,0.97), transparent); z-index: 50; }
+  .topbar-title { font-family: 'Cinzel', serif; font-size: 13px; letter-spacing: 4px; color: var(--gold); opacity: 0.8; }
+  .back-to-top { font-family: 'Share Tech Mono', monospace; font-size: 9px; letter-spacing: 3px; color: var(--text-dim); text-decoration: none; border: 1px solid var(--gold-dim); padding: 3px 10px; }
+  .back-to-top:hover { color: var(--gold); border-color: var(--gold); }
+
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-title">RENA — Roots Arc</div>
+  <a class="back-to-top" href="#top">▲ TOP</a>
+</div>
+<div class="page" id="top">
+
+  <div class="cover">
+    <div class="cover-eyebrow">After Story — Arc 4</div>
+    <div class="cover-title">ROOTS</div>
+    <div class="cover-sub">The Mandalorian & The Jedi & The Child</div>
+    <div class="cover-tagline">「我らが道」</div>
+    <div class="cover-tag">Episode 01 — 05 + Bonus Complete</div>
+  </div>
+
+  <div class="toc">
+    <div class="toc-title">EPISODES</div>
+    <ul class="toc-list">
+      <li class="toc-item"><a class="toc-link" href="#ra01">Episode 01 — RETURN「帰ってきた陽だまり」</a><span class="toc-num">01</span></li>
+      <li class="toc-item"><a class="toc-link" href="#ra02">Episode 02 — CLAN「鋼の仲間たち」</a><span class="toc-num">02</span></li>
+      <li class="toc-item"><a class="toc-link" href="#ra03">Episode 03 — FORGE「作戦、始動」</a><span class="toc-num">03</span></li>
+      <li class="toc-item"><a class="toc-link" href="#ra04">Episode 04 — RESCUE「取り戻す」</a><span class="toc-num">04</span></li>
+      <li class="toc-item"><a class="toc-link" href="#ra05">Episode 05 — HOME「帰る場所」</a><span class="toc-num">05</span></li>
+      <li class="toc-item"><a class="toc-link" href="#bonus">Bonus — REST「何もない一日」</a><span class="toc-num">★</span></li>
+    </ul>
+  </div>
+
+  <!-- EP01 -->
+  <div class="ep-header" id="ra01">
+    <div class="ep-eyebrow">Roots Arc — Episode 01</div>
+    <div class="ep-title">RETURN</div>
+    <div class="ep-title-jp">帰ってきた陽だまり</div>
+    <div class="ep-planet">◈ KALEVALA — OUTER RIM</div>
+  </div>
+  <div class="scene-head">EXT. カレヴァラ — 宇宙港 / 昼</div>
+  <p>ディンが補給のために選んだカレヴァラで、レナとグローグーが待っていると——</p>
+  <p><span class="dialogue sol">「レナさーん！！！」</span>金髪が風になびいて走ってきた。ソルだった。</p>
+  <p><span class="dialogue sol">「わあ久しぶりです！　元気でしたか！？　フォースは使えてますか！？　あとそれ誰ですか！？」</span></p>
+  <p>ソルの視線がグローグーに落ちた。二人の目が合った。フォースが——同時に相手を感じた。</p>
+  <div class="chaos-box">
+    <p>ソルのかばんが、ふわっと浮いた。<span class="dialogue sol">「あっ、待って——」</span></p>
+    <p>かばんがくるくると回転した。口が開いて中身がこぼれ落ちた。グローグーが耳を立てた。楽しそうだった。</p>
+  </div>
+  <p>ディンが補給から戻り、ソルを見て一瞬止まった。<span class="dialogue sol">「ディン！　久しぶりです！　いびきの件、すみませんでした」</span><span class="dialogue">「……覚えているのか」</span><span class="dialogue sol">「いびきのことは毎回謝ろうと決めてます」</span></p>
+  <p><span class="dialogue">「育てている。俺の子だ」</span>ディンがグローグーのことを言った。<span class="dialogue sol">「……家族、増えたんですね」</span><span class="dialogue">「ああ」</span></p>
+  <p>食堂で話を聞いた。<span class="dialogue sol">「フォース感応者を追っていたら——マンダロリアンのクランに行き着いた。シャドウ・コイルの残党に追われ、仲間を連れ去られていた。信頼できるマンダロリアンを探していた」</span></p>
+  <p><span class="dialogue">「行く」</span>ディンが一言で言った。迷いがなかった。</p>
+  <div class="ep-end"><div class="ep-end-mark">— End of Episode 01 —</div></div>
+
+  <!-- EP02 -->
+  <div class="ep-header" id="ra02">
+    <div class="ep-eyebrow">Roots Arc — Episode 02</div>
+    <div class="ep-title steel">CLAN</div>
+    <div class="ep-title-jp">鋼の仲間たち</div>
+    <div class="ep-planet">◈ CONCORDIA — OUTER RIM</div>
+  </div>
+  <div class="scene-head">EXT/INT. コンコルディア — 廃鉱山 / 昼〜夜</div>
+  <p>ソルのフォースを頼りにコンコルディアの廃鉱山へ。岩の陰から現れたマンダロリアンたちの先頭に立つ女性が言った。<span class="dialogue clan">「……ディン・ジャリン。生きていたか」</span></p>
+  <div class="char-appear"><div class="char-appear-icon">◈</div><div><div class="char-appear-name">MIRA</div><div class="char-appear-role">Former Children of the Watch — Clan Elder</div></div></div>
+  <p>作戦会議でミラにレナを紹介した。<span class="dialogue">「レナ。俺のRiduurだ」</span><span class="dialogue clan">「……Riduurか。共に戦う者か」</span><span class="dialogue">「ともに戦い、ともに守り、ともにいる」</span>ミラが頷いた。</p>
+  <p>その間、外でソルがグローグーに授業をしていた。</p>
+  <div class="lesson-box">
+    <p><span class="dialogue sol">「グローグー、フォースの練習しましょう。まず石を浮かせてみて」</span></p>
+    <p>グローグーが手をかざした。石が勢いよく飛んだ。<span class="dialogue sol">「あ、飛んだ。……それは浮かせるじゃなくて飛ばすです」</span></p>
+    <p>石がソルの方向に飛んだ。ソルがフォースで弾いた。子供マンダロリアンたちが「おお」と声を上げた。</p>
+  </div>
+  <p>夜、ミラとディンが話すのを見てソルが言った。<span class="dialogue sol">「ディン、あそこで全然違う顔してますね」</span><span class="dialogue">「……そうだね」</span>レナも知らなかった顔だった。でも——知れてよかった。</p>
+  <p>深夜、外でディンが言った。<span class="dialogue">「……クランの古参だ。俺が子供のころ——鎧の磨き方を教えてくれた」</span><span class="dialogue">「……ミラが俺のRiduurのことを——認めた。認めなかったら、俺が言い張るつもりだったが」</span><span class="dialogue">「言い張ってくれるの？」</span><span class="dialogue">「当然だ」</span></p>
+  <div class="ep-end"><div class="ep-end-mark">— End of Episode 02 —</div></div>
+
+  <!-- EP03 -->
+  <div class="ep-header" id="ra03">
+    <div class="ep-eyebrow">Roots Arc — Episode 03</div>
+    <div class="ep-title">FORGE</div>
+    <div class="ep-title-jp">作戦、始動</div>
+    <div class="ep-planet">◈ CONCORDIA — OUTER RIM</div>
+  </div>
+  <div class="scene-head">EXT/INT. コンコルディア / 翌日</div>
+  <p>授業二日目。グローグーが石をソルの手のひらに乗せることに成功した。<span class="dialogue sol">「……できた。できましたよグローグー！」</span>すぐ二個目を飛ばし始めた。<span class="dialogue sol">「上達が早い。いい意味でも悪い意味でも」</span></p>
+  <p>フォース追跡の作戦会議。ソルとレナが合わせてフォースを送ると——グローグーが加わった瞬間に遠くまで届いた。</p>
+  <div class="force-track">
+    <p>三人分のフォースが、一気に遠くまで届いた——<em class="force">方向がわかった。座標が見えた。</em></p>
+    <p><span class="dialogue sol">「……見えました。子供たちの気配、生きてます」</span></p>
+  </div>
+  <p>ミラが鍛冶場でレナに言った。<span class="dialogue clan">「今日で、お前は仲間だ。それは掟ではなく、俺が決める」</span></p>
+  <p>作戦前夜、ディンがレナに言った。<span class="dialogue">「怖くても動けるのが、お前だ」</span></p>
+  <p><span class="dialogue sol">「……この子、ほんとに大きくなりますよ。フォースの強さが——普通じゃない。でも——今は、まだちっちゃくて可愛い」</span>グローグーが「うー」と言った。聞こえていたのかもしれない。</p>
+  <div class="ep-end"><div class="ep-end-mark">— End of Episode 03 —</div></div>
+
+  <!-- EP04 -->
+  <div class="ep-header" id="ra04">
+    <div class="ep-eyebrow">Roots Arc — Episode 04</div>
+    <div class="ep-title red">RESCUE</div>
+    <div class="ep-title-jp">取り戻す</div>
+    <div class="ep-planet">◈ INDUSTRIAL SATELLITE — OUTER RIM</div>
+  </div>
+  <div class="scene-head">EXT/INT. 工業衛星 / 作戦当日</div>
+  <p>グローグーが貨物室で待つと決めた。レナが「必ず戻るから」と言うと、グローグーは諦めた顔じゃなく、待つと決めた顔をした。</p>
+  <p>三人で潜入。ソルのフォースで方向を辿りながら進む中——</p>
+  <div class="grogu-support">
+    <p>フォースの流れに、別の気配が加わった。遠い。でも確かな、小さな流れ。グローグーだった。船の中から、フォースを送ってきていた。</p>
+    <p><span class="dialogue sol">「グローグーが……繋いでくれてる。子供たちの場所——右の通路、突き当たりです」</span></p>
+  </div>
+  <p>拘束区画を発見。ソルのライトセーバーとディンが警備を制圧した。</p>
+  <div class="rescue-moment">
+    <p>子供が顔を上げた。怖がった目で、入ってきた三人を見た。<span class="dialogue">「マンダロリアンだ。連れに来た」</span>子供が——泣き始めた。</p>
+    <p>レナが子供の前にしゃがんだ。<span class="dialogue">「大丈夫。もう大丈夫だから」</span>子供が手を伸ばしてきた。レナが抱きしめた。<em class="force">フォースが、静かに共鳴した。</em></p>
+  </div>
+  <p>脱出成功。全員が外に出た。子供がレナの手を一瞬だけ握って、仲間の腕に行った。</p>
+  <div class="pull-quote green"><p>一瞬だけ握ってくれた。それで十分だった。</p></div>
+  <p>ミラが言った。<span class="dialogue clan">「……全員か」</span><span class="dialogue">「全員」</span>その頷きに、全部が入っていた。</p>
+  <p>ソルがグローグーに言った。<span class="dialogue sol">「今日の支援——すごく助かりました。先生として誇らしいです」</span>グローグーの耳がぱたぱたした。</p>
+  <div class="ep-end"><div class="ep-end-mark">— End of Episode 04 —</div></div>
+
+  <!-- EP05 -->
+  <div class="ep-header" id="ra05">
+    <div class="ep-eyebrow">Roots Arc — Episode 05</div>
+    <div class="ep-title">HOME</div>
+    <div class="ep-title-jp">帰る場所</div>
+    <div class="ep-planet">◈ CONCORDIA — OUTER RIM</div>
+  </div>
+  <div class="scene-head">EXT. コンコルディア / 翌朝〜出発</div>
+  <p>翌朝、追跡者が一人現れた。シャドウ・コイルの交渉官だと名乗った。ディンが一人で向かった。</p>
+  <div class="key-line"><p>「生きたまま行くか、冷たくなってから行くか——どちらがいい」</p></div>
+  <p>男が走り去った。<span class="pull-quote" style="border-left:3px solid var(--gold); margin:20px 0 20px 20px; padding:4px 0 4px 20px;"><p style="font-size:15px; font-style:italic; color:var(--text-bright);">生きたまま行くか、冷たくなってから行くか。<br>交渉の余地を一文で消した。これがディン・ジャリンの仕事のやり方だ。</p></span></p>
+  <p>クランが出発前に並んだ。ミラが前に立った。</p>
+  <div class="the-way"><div class="the-way-main">「我らが道」</div><div class="the-way-echo">— This is the Way —</div></div>
+  <p>声が重なった。ディンも拳を胸に当て、<em class="steel">「我らが道」</em>と言った。レナはその場に立って、初めてちゃんと見た——ディンがマンダロリアンとして仲間と声を揃えている姿を。</p>
+  <div class="mira-final"><p><span class="dialogue clan">「ジャリンが変わった。お前が来てから。子供のころはよく笑っていた。……今は、声ではわからないが。横顔が違う」</span><p>ミラが拳を胸に当てた。<span class="dialogue clan">「これが我らが道。お前も、仲間だ」</span></p></p></div>
+  <p>レナが同じ動作を返した。</p>
+  <div class="the-way"><div class="the-way-main">「我らが道」</div></div>
+  <p>ソルの別れ際。<span class="dialogue sol">「ディン！　今回——かっこよかったです。掟の言葉、言ってるとき。本物だって思いました」</span><span class="dialogue">「……当然だ」</span></p>
+  <p>夜、ディンが言った。<span class="dialogue">「……お前といると、そうなる」</span>笑わなくなったはずのディンが、笑う空気を持つようになった理由。</p>
+  <div class="arc-end-box"><p>我らが道。</p><p>共にあるとき、われらは一つ。</p><p>どこへ行っても——ここが帰る場所だ。</p></div>
+  <div class="ep-end"><div class="ep-end-mark">— End of Episode 05 —</div></div>
+
+  <!-- BONUS -->
+  <div class="ep-header" id="bonus">
+    <div class="ep-eyebrow">Roots Arc — Bonus Episode</div>
+    <div class="ep-title warm">REST</div>
+    <div class="ep-title-jp">何もない一日</div>
+    <div class="ep-planet">◈ RAZOR CREST — DRIFTING</div>
+  </div>
+  <div class="scene-head">INT. RAZOR CREST / 一日中</div>
+  <p>特に何もない日だった。グローグーが朝から棚を漁り、レナの青い石の髪留めを見つけて光に当てて喜んでいた。</p>
+  <div class="grogu-action"><p>グローグーが髪留めを手でつまんで、光に当てた。青い石がきらっと光った。グローグーの目が輝いた。また光に当てた。またきらっとした。何度も繰り返した。完全に夢中になっていた。</p></div>
+  <p><span class="dialogue">「ディン、暇なとき何するの？」</span><span class="dialogue">「整備」</span><span class="dialogue">「整備以外は？」</span><span class="dialogue">「……整備」</span><span class="dialogue">「整備しかないの！？」</span></p>
+  <p>話した。ディンが子供のころクランで食べていた芋の煮物の話。<span class="dialogue">「次に惑星降りたとき探してみる。似たようなやつ。ディンは匂いだけ嗅いで」</span></p>
+  <p>昼過ぎ、グローグーが昼寝をした。二人きりになった。</p>
+  <p><span class="dialogue">「今が一番好きかもしれない。何もなくて、グローグーが寝てて、ディンが隣にいて。特別なことは何もないけど——これが一番落ち着く」</span></p>
+  <p><span class="dialogue">「……俺も」</span></p>
+  <div class="warm-scene"><p>グローグーが寝ている。エンジンの音が低く響いている。ディンの肩が、レナの肩に触れていた。どちらも動かなかった。ただ、そこにいた。</p></div>
+  <p>夕方、グローグーが起きてきて、ディンとレナの手を両方まとめて掴んだ。三人で星を見た。グローグーが「うー」と言った。<span class="dialogue">「きれいだね」</span>ディンが言った。<span class="dialogue">「……そうだな」</span></p>
+  <div class="pull-quote warm"><p>何もない一日だった。整備もしなかった。依頼もなかった。大事なことは何も起きなかった。<br>でも——今日が一番、好きかもしれない。</p></div>
+
+  <div style="text-align:center; padding: 60px 0 20px;">
+    <div style="font-family:'Cinzel',serif; font-size:clamp(20px,4vw,32px); font-weight:900; color:var(--gold); letter-spacing:8px; text-shadow:0 0 40px rgba(201,168,76,0.3); margin-bottom:12px;">ROOTS ARC</div>
+    <div style="font-family:'Share Tech Mono',monospace; font-size:10px; letter-spacing:5px; color:var(--text-dim); margin-bottom:20px;">COMPLETE</div>
+    <div style="font-family:'Cinzel',serif; font-size:13px; letter-spacing:10px; color:var(--gold-dim);">✦ ✦ ✦ ✦ ✦</div>
+  </div>
+
+</div>
+</body>
+</html>
