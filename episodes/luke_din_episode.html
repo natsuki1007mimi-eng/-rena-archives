@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>星の間で、言葉より先に — RENA ARCHIVES</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500&family=Shippori+Mincho:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --bg2: #0e0e18;
+    --text: #d4cfc8;
+    --text-dim: #7a7570;
+    --accent: #8fa8c8;
+    --accent2: #c8a87a;
+    --border: #1e1e2e;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 300;
+    line-height: 2.2;
+    font-size: 16px;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image:
+      radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.14) 0%, transparent 100%),
+      radial-gradient(1px 1px at 28% 65%, rgba(255,255,255,0.09) 0%, transparent 100%),
+      radial-gradient(1px 1px at 48% 8%,  rgba(255,255,255,0.12) 0%, transparent 100%),
+      radial-gradient(1px 1px at 65% 78%, rgba(255,255,255,0.07) 0%, transparent 100%),
+      radial-gradient(1px 1px at 80% 35%, rgba(255,255,255,0.10) 0%, transparent 100%),
+      radial-gradient(1px 1px at 92% 58%, rgba(255,255,255,0.08) 0%, transparent 100%),
+      radial-gradient(1px 1px at 18% 88%, rgba(255,255,255,0.06) 0%, transparent 100%),
+      radial-gradient(1px 1px at 55% 42%, rgba(255,255,255,0.05) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── TOP LINK ── */
+  .top-link {
+    position: relative;
+    z-index: 10;
+    display: block;
+    text-align: right;
+    padding: 20px 30px 0;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    color: var(--text-dim);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .top-link:hover { color: var(--accent); }
+
+  /* ── HEADER ── */
+  header {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 60px 20px 50px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .label-top {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11px;
+    letter-spacing: 0.5em;
+    color: var(--accent);
+    opacity: 0.65;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .work-tag {
+    font-size: 9px;
+    letter-spacing: 0.5em;
+    color: var(--accent2);
+    opacity: 0.6;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  h1 {
+    font-family: 'Shippori Mincho', serif;
+    font-size: clamp(22px, 4.5vw, 34px);
+    font-weight: 500;
+    color: #ece8e0;
+    letter-spacing: 0.18em;
+    line-height: 1.6;
+    margin-bottom: 14px;
+  }
+
+  .pairing {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+    letter-spacing: 0.3em;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+  }
+
+  .chapter-count {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--accent);
+    opacity: 0.7;
+    margin-bottom: 28px;
+  }
+
+  .header-deco {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    opacity: 0.35;
+    margin-bottom: 28px;
+  }
+  .deco-line { width: 40px; height: 1px; background: var(--accent); }
+  .deco-dot  { width: 3px; height: 3px; border-radius: 50%; background: var(--accent2); }
+
+  .tagline {
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.12em;
+    line-height: 2;
+  }
+
+  /* ── CHAPTER LIST ── */
+  .chapter-section {
+    position: relative;
+    z-index: 1;
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 60px 30px 100px;
+  }
+
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .section-label span {
+    font-size: 9px;
+    letter-spacing: 0.55em;
+    color: var(--accent);
+    opacity: 0.55;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  .section-label-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .chapter-list {
+    list-style: none;
+  }
+
+  .chapter-list li {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .chapter-list a {
+    display: grid;
+    grid-template-columns: 52px 1fr auto;
+    align-items: baseline;
+    gap: 8px;
+    padding: 15px 4px;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  .chapter-list a:hover {
+    background: rgba(143, 168, 200, 0.04);
+  }
+
+  .ch-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    color: var(--accent);
+    opacity: 0.4;
+    text-align: right;
+    padding-right: 8px;
+  }
+  .chapter-list a:hover .ch-num { opacity: 0.7; }
+
+  .ch-title {
+    font-size: 14px;
+    color: var(--text-dim);
+    letter-spacing: 0.07em;
+    transition: color 0.2s;
+  }
+  .chapter-list a:hover .ch-title { color: var(--accent); }
+
+  .ch-arrow {
+    font-size: 10px;
+    color: var(--accent);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .chapter-list a:hover .ch-arrow { opacity: 0.5; }
+
+  /* ── NOTE ── */
+  .note {
+    position: relative;
+    z-index: 1;
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 0 30px 80px;
+    border-top: 1px solid var(--border);
+    padding-top: 40px;
+    text-align: center;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.15em;
+    line-height: 2.4;
+    opacity: 0.7;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 40px 20px 60px;
+    border-top: 1px solid var(--border);
+    color: var(--text-dim);
+    font-size: 11px;
+    letter-spacing: 0.3em;
+  }
+  footer p + p { margin-top: 6px; opacity: 0.5; }
+
+  @media (max-width: 600px) {
+    .chapter-section { padding: 40px 20px 80px; }
+    .chapter-list a { grid-template-columns: 40px 1fr; }
+    .ch-arrow { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<a class="top-link" href="../index.html" id="top">▲ RENA ARCHIVES</a>
+
+<header>
+  <p class="label-top">Star Wars Fan Fiction — Other Works</p>
+  <p class="work-tag">THE MANDALORIAN ERA · BL · SLOW BURN</p>
+  <h1>星の間で、言葉より先に</h1>
+  <p class="pairing">Din Djarin × Luke Skywalker</p>
+  <p class="chapter-count">Chapter 01 — 25 Complete</p>
+  <div class="header-deco">
+    <div class="deco-line"></div>
+    <div class="deco-dot"></div>
+    <div class="deco-line"></div>
+  </div>
+  <p class="tagline">
+    再会から始まり、言葉より先に積み重なっていくもの。<br>
+    グローグーが空気を読み、アソーカが全部暴き、R2が急かす。<br>
+    じれじれのスロー・バーン。
+  </p>
+</header>
+
+<div class="chapter-section">
+  <div class="section-label">
+    <span>Chapters</span>
+    <div class="section-label-line"></div>
+  </div>
+  <ul class="chapter-list">
+    <li><a href="luke_din/ch01.html"><span class="ch-num">Ch.01</span><span class="ch-title">星の間で、言葉より先に</span><span class="ch-arrow">→</span></a></li>
+    <li><a href="luke_din/ch02.html"><span class="ch-num">Ch.02</span><span class="ch-title">早く、とは言っていない</span><span class="ch-arrow">→</span></a></li>
+    <li><a href="luke_din/ch03.html"><span class="ch-num">Ch.03</span><span class="ch-title">届かない距離で</span><span class="ch-arrow">→</span></a></li>
+    <li><a href="luke_din/ch04.html"><span class="ch-num">Ch.04</span><span class="ch-title">言い訳の名前</span><span class="ch-arrow">→</span></a></li>
+    <li><a href="luke_din/ch05.html"><span class="ch-num">Ch.05</span><span class="ch-title">返ってきた言葉</span><span class="ch-arrow">→</span></a></li>
+    <li><a href="luke_din/ch06.html"><span class="ch-num">Ch.06</span><span class="ch-title">言ってしまった</span><span class="ch-arrow">→</span></a></li>
+    <li><a href="luke_din/ch07.html"><span class="ch-num">Ch.07</span><span class="ch-title">減らすつもりだった</span><span class="ch-arrow">→</span></a></li>
+    <li><a href="luke_din/ch08.html"><span class="ch-num">Ch.08</span><span class="ch-title">いる側に</span><span class="ch-arrow">→</span></a></li>
+    <li><a href="luke_din/ch09.html"><span class="ch-num">Ch.09</span><span class="ch-title">朝、まだいた</span><span class="ch-arrow">→</span></a></li>
+    <li><a href="luke_din/ch10.html"><span class="ch-num">Ch.10</span><span class="ch-title">いなくなる前に</span><span class="ch-arrow">→</span></a></li>
+    <li><a href="luke_din/ch11.html"><span class="ch-num">Ch.11</span><span class="ch-title">見せる</span><span class="ch-arrow">→</span></a></li>
+    <li><a href="luke_din/ch12.html"><span class="ch-num">Ch.12</span><span class="ch-title">言葉はいらない</span><span class="ch-arrow">→</span></a></li>
+    <li><a href="luke_din/ch13.html"><span class="ch-num">Ch.13</span><span class="ch-title">感じ取った</span><span class="ch-arrow">→</span></a></li>
+    <li><a href="luke_din/ch14.html"><span class="ch-num">Ch.14</span><span class="ch-title">道の話</span><span class="ch-arrow">→</span></a></li>
+    <li><a href="luke_din/ch15.html"><span class="ch-num">Ch.15</span><span class="ch-title">見られた</span><span class="ch-arrow">→</span></a></li>
+    <li><a href="luke_din/ch16.html"><span class="ch-num">Ch.16</span><span class="ch-title">うるさい三人</span><span class="ch-arrow">→</span></a></li>
+    <li><a href="luke_din/ch17.html"><span class="ch-num">Ch.17</span><span class="ch-title">変わった</span><span class="ch-arrow">→</span></a></li>
+    <li><a href="luke_din/ch18.html"><span class="ch-num">Ch.18</span><span class="ch-title">古い仲間</span><span class="ch-arrow">→</span></a></li>
+    <li><a href="luke_din/ch19.html"><span class="ch-num">Ch.19</span><span class="ch-title">待つ側</span><span class="ch-arrow">→</span></a></li>
+    <li><a href="luke_din/ch20.html"><span class="ch-num">Ch.20</span><span class="ch-title">話したいこと</span><span class="ch-arrow">→</span></a></li>
+    <li><a href="luke_din/ch21.html"><span class="ch-num">Ch.21</span><span class="ch-title">帰ってきた</span><span class="ch-arrow">→</span></a></li>
+    <li><a href="luke_din/ch22.html"><span class="ch-num">Ch.22</span><span class="ch-title">朝、隣に</span><span class="ch-arrow">→</span></a></li>
+    <li><a href="luke_din/ch23.html"><span class="ch-num">Ch.23</span><span class="ch-title">日常の音</span><span class="ch-arrow">→</span></a></li>
+    <li><a href="luke_din/ch24.html"><span class="ch-num">Ch.24</span><span class="ch-title">父子旅</span><span class="ch-arrow">→</span></a></li>
+    <li><a href="luke_din/ch25.html"><span class="ch-num">Ch.25</span><span class="ch-title">グリーフからの依頼</span><span class="ch-arrow">→</span></a></li>
+  </ul>
+</div>
+
+<div class="note">
+  ✦ NOTE ✦<br><br>
+  これはファンフィクションです。オリジナルキャラクターは登場しません。<br>
+  Star Wars およびすべての関連キャラクターは Lucasfilm / Disney の著作物です。
+</div>
+
+<footer>
+  <p>RENA ARCHIVES</p>
+  <p>STAR WARS FAN FICTION · OTHER WORKS</p>
+</footer>
+
+</body>
+</html>
